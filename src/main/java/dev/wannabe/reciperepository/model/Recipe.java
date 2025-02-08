@@ -1,37 +1,32 @@
 package dev.wannabe.reciperepository.model;
 
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Getter
-public class Tool {
+@Setter
+public class Recipe {
+
 
     @Id
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private long id;
 
-    @Setter
     private String name;
-
-    @Setter
     private String description;
+    private String type;
 
-    @ManyToMany(mappedBy = "tools")
-    private Set<RecipeProcess> recipeProcesses = new HashSet<>();
-
-
-    public Tool() {
+    public Recipe() {
     }
-    public Tool( String name, String description) {
+
+    public Recipe(String name, String description, String type) {
         this.name = name;
         this.description = description;
+        this.type = type;
     }
-
-
 }
