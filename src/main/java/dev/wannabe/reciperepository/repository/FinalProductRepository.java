@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface FinalProductInterface extends JpaRepository<FinalProduct, Long> {
+public interface FinalProductRepository extends JpaRepository<FinalProduct, Long> {
 
 
 }
