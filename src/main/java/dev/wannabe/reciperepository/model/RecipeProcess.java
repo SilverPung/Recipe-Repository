@@ -62,6 +62,10 @@ public class RecipeProcess {
         this.typeofWork = typeofWork;
     }
 
+    public void addTool(Tool tool) {
+        tools.add(tool);
+    }
+
 
 
 

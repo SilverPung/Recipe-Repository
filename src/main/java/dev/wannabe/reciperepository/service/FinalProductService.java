@@ -16,21 +16,29 @@ public class FinalProductService {
         this.finalProductRepository = finalProductRepository;
     }
 
-    public void deleteById(Long id) {
-        finalProductRepository.deleteById(id);
-    }
 
-    public FinalProduct save(FinalProduct finalProduct) {
-        return finalProductRepository.save(finalProduct);
+
+    public Iterable<FinalProduct> findAll() {
+        return finalProductRepository.findAll();
     }
 
     public FinalProduct findById(Long id) {
         return finalProductRepository.findById(id).orElse(null);
     }
 
-    public Iterable<FinalProduct> findAll() {
-        return finalProductRepository.findAll();
+    public FinalProduct save(FinalProduct finalProduct) {
+        return finalProductRepository.save(finalProduct);
     }
+
+    public void deleteById(Long id) {
+        finalProductRepository.deleteById(id);
+    }
+
+
+
+
+
+
 
 
 
