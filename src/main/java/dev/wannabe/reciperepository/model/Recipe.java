@@ -29,4 +29,13 @@ public class Recipe {
         this.description = description;
         this.type = type;
     }
+
+
+    public Recipe(long id, String name, String description, String type) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.type = type;
+    }
+
 }

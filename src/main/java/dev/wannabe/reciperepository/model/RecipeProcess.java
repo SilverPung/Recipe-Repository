@@ -51,6 +51,18 @@ public class RecipeProcess {
     }
 
 
+    public RecipeProcess(long id, Recipe recipe, int stepNumber, String name, String description, long duration, String workStation, String typeofWork) {
+        this.id = id;
+        this.recipe = recipe;
+        this.stepNumber = stepNumber;
+        this.name = name;
+        this.description = description;
+        this.duration = duration;
+        this.workStation = workStation;
+        this.typeofWork = typeofWork;
+    }
+
+
 
 
 

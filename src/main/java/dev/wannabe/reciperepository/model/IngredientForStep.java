@@ -6,21 +6,28 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class IngredientForStep {
 
     @EmbeddedId
     private IngredientForStepId id;
 
-    @Getter
-    @Setter
+
     private String quantityNeeded;
 
     public IngredientForStep() {
     }
 
+
+
     public IngredientForStep(IngredientForStepId id, String quantityNeeded) {
         this.id = id;
         this.quantityNeeded = quantityNeeded;
     }
+
+
+
+
 
 }

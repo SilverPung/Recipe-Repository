@@ -33,4 +33,12 @@ public class Supplier {
     }
 
 
+    public Supplier(long id, String name, String Type, String Email) {
+        this.id = id;
+        this.name = name;
+        this.Type = Type;
+        this.Email = Email;
+    }
+
+
 }

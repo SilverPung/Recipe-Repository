@@ -36,4 +36,14 @@ public class FinalProduct {
         this.quantity = quantity;
         this.expirationDate = expirationDate;
     }
+
+    public FinalProduct(long id, String name, String description, String type, String measurementUnit, long quantity, Date expirationDate) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.type = type;
+        this.measurementUnit = measurementUnit;
+        this.quantity = quantity;
+        this.expirationDate = expirationDate;
+    }
 }

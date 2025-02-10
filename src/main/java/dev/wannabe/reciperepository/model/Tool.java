@@ -23,12 +23,18 @@ public class Tool {
     private String description;
 
     @ManyToMany(mappedBy = "tools")
-    private Set<RecipeProcess> recipeProcesses = new HashSet<>();
+    private final Set<RecipeProcess> recipeProcesses = new HashSet<>();
 
 
     public Tool() {
     }
     public Tool( String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public Tool(long id, String name, String description) {
+        this.id = id;
         this.name = name;
         this.description = description;
     }

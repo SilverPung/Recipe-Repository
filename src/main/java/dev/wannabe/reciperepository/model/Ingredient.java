@@ -37,4 +37,14 @@ public class Ingredient {
         this.measurementUnit = measurementUnit;
         this.supplier = supplier;
     }
+
+    public Ingredient(long id, String name, Date expirationDate, long quantity, String type, String measurementUnit, Supplier supplier) {
+        this.id = id;
+        this.name = name;
+        this.expirationDate = expirationDate;
+        this.quantity = quantity;
+        this.type = type;
+        this.measurementUnit = measurementUnit;
+        this.supplier = supplier;
+    }
 }
