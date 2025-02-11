@@ -37,6 +37,9 @@ public class RecipeProcess {
     )
     private Set<Tool> tools = new HashSet<>();
 
+    @OneToMany(mappedBy = "recipeProcess")
+    private final Set<IngredientForStep> ingredients = new HashSet<>();
+
     public RecipeProcess() {
     }
 

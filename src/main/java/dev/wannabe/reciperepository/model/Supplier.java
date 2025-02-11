@@ -4,8 +4,12 @@ package dev.wannabe.reciperepository.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -16,12 +20,12 @@ public class Supplier {
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private long id;
 
-
     private String name;
-
     private String Type;
-
     private String Email;
+
+    @OneToMany(mappedBy = "supplier")
+    private final Set<Ingredient> ingredients = new HashSet<>();
 
     public Supplier() {
     }

@@ -1,8 +1,6 @@
 package dev.wannabe.reciperepository.model;
 
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,20 +13,16 @@ import java.util.Objects;
 @Setter
 public class IngredientForStepId implements Serializable{
 
-    @ManyToOne
-    @JoinColumn(name="step_id", nullable=false)
-    private RecipeProcess step;
 
-    @ManyToOne
-    @JoinColumn(name="ingredient_id", nullable=false)
-    private Ingredient ingredient;
+    private Long stepId;
+    private Long ingredientId;
 
     public IngredientForStepId() {
     }
 
-    public IngredientForStepId(RecipeProcess step, Ingredient ingredient) {
-        this.step = step;
-        this.ingredient = ingredient;
+    public IngredientForStepId(Long stepId, Long ingredientId) {
+        this.stepId = stepId;
+        this.ingredientId = ingredientId;
     }
 
     @Override
@@ -36,11 +30,11 @@ public class IngredientForStepId implements Serializable{
         if (this == o) return true;
         if (!(o instanceof IngredientForStepId)) return false;
         IngredientForStepId that = (IngredientForStepId) o;
-        return step.equals(that.step) && ingredient.equals(that.ingredient);
+        return stepId.equals(that.stepId) && ingredientId.equals(that.ingredientId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(step, ingredient);
+        return Objects.hash(stepId, ingredientId);
     }
 }

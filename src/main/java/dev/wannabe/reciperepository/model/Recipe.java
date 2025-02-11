@@ -4,8 +4,12 @@ package dev.wannabe.reciperepository.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -20,6 +24,10 @@ public class Recipe {
     private String name;
     private String description;
     private String type;
+
+    @OneToMany(mappedBy = "recipe")
+    private final Set<RecipeProcess> recipeProcesses = new HashSet<>();
+
 
     public Recipe() {
     }
