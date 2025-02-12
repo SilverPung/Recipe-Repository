@@ -32,5 +32,3 @@ build/
 ### VS Code ###
 .vscode/
 .idea/
-application.properties
-application-test.properties
