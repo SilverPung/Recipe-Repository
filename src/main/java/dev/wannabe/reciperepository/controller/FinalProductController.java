@@ -1,9 +1,10 @@
 package dev.wannabe.reciperepository.controller;
 
-
 import dev.wannabe.reciperepository.model.FinalProduct;
 import dev.wannabe.reciperepository.service.FinalProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,29 +18,37 @@ public class FinalProductController {
     }
 
     @GetMapping("/final-products")
-    public Iterable<FinalProduct> getFinalProducts() {
-        return finalProductService.findAll();
+    public ResponseEntity<Iterable<FinalProduct>> getFinalProducts() {
+        Iterable<FinalProduct> products = finalProductService.findAll();
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @GetMapping("/final-products/{id}")
-    public FinalProduct getFinalProductById(@PathVariable Long id) {
-        return finalProductService.findById(id);
+    public ResponseEntity<FinalProduct> getFinalProductById(@PathVariable Long id) {
+        FinalProduct product = finalProductService.findById(id);
+        if (product != null) {
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/final-products")
-    public FinalProduct saveFinalProduct(@RequestBody FinalProduct finalProduct) {
-        return finalProductService.save(finalProduct);
+    public ResponseEntity<FinalProduct> saveFinalProduct(@RequestBody FinalProduct finalProduct) {
+        FinalProduct savedProduct = finalProductService.save(finalProduct);
+        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/final-products/{id}")
-    public void deleteFinalProduct(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteFinalProduct(@PathVariable Long id) {
         finalProductService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/final-products/{id}")
-    public FinalProduct updateFinalProduct(@PathVariable Long id, @RequestBody FinalProduct finalProduct) {
+    public ResponseEntity<FinalProduct> updateFinalProduct(@PathVariable Long id, @RequestBody FinalProduct finalProduct) {
         finalProduct.setId(id);
-        return finalProductService.save(finalProduct);
+        FinalProduct updatedProduct = finalProductService.save(finalProduct);
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
     }
-
 }
