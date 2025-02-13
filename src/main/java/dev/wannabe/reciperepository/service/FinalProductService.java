@@ -30,8 +30,13 @@ public class FinalProductService {
         return finalProductRepository.save(finalProduct);
     }
 
-    public void deleteById(Long id) {
-        finalProductRepository.deleteById(id);
+    public long deleteById(Long id) {
+        boolean exists = finalProductRepository.existsById(id);
+        if (exists) {
+            finalProductRepository.deleteById(id);
+            return id;
+        }
+        return -1;
     }
 
 

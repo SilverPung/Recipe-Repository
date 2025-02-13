@@ -7,6 +7,7 @@ import dev.wannabe.reciperepository.service.RecipeProcessService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api")
 public class RecipeProcessController {
 
     private final RecipeProcessService recipeProcessService;

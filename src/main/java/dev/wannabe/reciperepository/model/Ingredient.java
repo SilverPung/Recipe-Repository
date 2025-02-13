@@ -55,4 +55,5 @@ public class Ingredient {
         this.measurementUnit = measurementUnit;
         this.supplier = supplier;
     }
+
 }

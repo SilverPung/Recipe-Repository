@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api")
 public class FinalProductController {
 
     private final FinalProductService finalProductService;
@@ -40,9 +41,9 @@ public class FinalProductController {
     }
 
     @DeleteMapping("/final-products/{id}")
-    public ResponseEntity<Void> deleteFinalProduct(@PathVariable Long id) {
-        finalProductService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Long> deleteFinalProduct(@PathVariable Long id) {
+        long deletedId = finalProductService.deleteById(id);
+        return new ResponseEntity<>(deletedId, HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/final-products/{id}")

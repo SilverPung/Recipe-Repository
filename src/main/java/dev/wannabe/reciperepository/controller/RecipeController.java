@@ -3,10 +3,14 @@ package dev.wannabe.reciperepository.controller;
 
 import dev.wannabe.reciperepository.model.Recipe;
 import dev.wannabe.reciperepository.service.RecipeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 @RestController
+@RequestMapping("/api")
 public class RecipeController {
 
     private final RecipeService recipeService;
@@ -17,30 +21,40 @@ public class RecipeController {
     }
 
     @GetMapping("/recipes")
-    public Iterable<Recipe> getRecipes() {
-        return recipeService.findAll();
+    public ResponseEntity<Iterable<Recipe>> getRecipes() {
+        Iterable<Recipe> recipes = recipeService.findAll();
+        return new ResponseEntity<>(recipes, HttpStatus.OK);
     }
 
     @GetMapping("/recipes/{id}")
-    public Recipe getRecipeById(@PathVariable Long id) {
-        return recipeService.findById(id);
+    public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
+        Recipe recipe = recipeService.findById(id);
+        if (recipe != null) {
+            return new ResponseEntity<>(recipe, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping("/recipes")
-    public Recipe saveRecipe(@RequestBody Recipe recipe) {
-        return recipeService.save(recipe);
+    public ResponseEntity<Recipe> saveRecipe(@Valid @RequestBody Recipe recipe) {
+        Recipe savedRecipe = recipeService.save(recipe);
+        return new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/recipes/{id}")
-    public void deleteRecipe(@PathVariable Long id) {
-        recipeService.deleteById(id);
+    public ResponseEntity<Long> deleteRecipe(@PathVariable Long id) {
+        long deletedId = recipeService.deleteById(id);
+        return new ResponseEntity<>(deletedId,HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/recipes/{id}")
-    public Recipe updateRecipe(@PathVariable Long id, @RequestBody Recipe recipe) {
+    public ResponseEntity<Recipe> updateRecipe(@PathVariable Long id, @Valid @RequestBody Recipe recipe) {
         recipe.setId(id);
-        return recipeService.save(recipe);
+        Recipe updatedRecipe = recipeService.save(recipe);
+        return new ResponseEntity<>(updatedRecipe, HttpStatus.OK);
     }
+
 
 
 }

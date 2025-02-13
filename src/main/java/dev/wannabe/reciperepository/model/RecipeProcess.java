@@ -1,6 +1,7 @@
 package dev.wannabe.reciperepository.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,7 @@ public class RecipeProcess {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "recipeId")
+    @JoinColumn(name = "recipeId", nullable = false)
     private Recipe recipe;
 
     private int stepNumber;
@@ -29,6 +30,7 @@ public class RecipeProcess {
     private String workStation;
     private String typeofWork;
 
+
     @ManyToMany
     @JoinTable(
             name = "ToolForStep",
@@ -37,6 +39,7 @@ public class RecipeProcess {
     )
     private Set<Tool> tools = new HashSet<>();
 
+    @JsonIgnoreProperties("recipeProcess")
     @OneToMany(mappedBy = "recipeProcess")
     private final Set<IngredientForStep> ingredients = new HashSet<>();
 
