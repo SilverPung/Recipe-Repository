@@ -30,7 +30,7 @@ public class Recipe {
     @NotEmpty
     private String description;
 
-
+    @Enumerated(EnumType.STRING)
     private RecipeType type;
 
     @JsonIgnoreProperties("recipe")
@@ -54,5 +54,6 @@ public class Recipe {
         this.description = description;
         this.type = type;
     }
+
 
 }
