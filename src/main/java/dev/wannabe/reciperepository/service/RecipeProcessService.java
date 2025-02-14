@@ -11,18 +11,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import org.springframework.http.HttpStatus;
+
 @Service
 public class RecipeProcessService {
 
 
     private final RecipeProcessRepository recipeProcessRepository;
     private final RecipeRepository recipeRepository;
+    private final ToolRepository toolRepository;
 
 
     @Autowired
-    public RecipeProcessService(RecipeProcessRepository recipeProcessRepository, RecipeRepository recipeRepository) {
+    public RecipeProcessService(RecipeProcessRepository recipeProcessRepository, RecipeRepository recipeRepository, ToolRepository toolRepository) {
         this.recipeProcessRepository = recipeProcessRepository;
         this.recipeRepository = recipeRepository;
+        this.toolRepository = toolRepository;
     }
 
     public Iterable<RecipeProcess> findAll() {
@@ -74,4 +78,31 @@ public class RecipeProcessService {
     }
 
 
+    public RecipeProcess addTool(Long id, Long toolId) {
+        RecipeProcess recipeProcess = recipeProcessRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "RecipeProcess not found")
+        );
+
+        Tool tool = toolRepository.findById(toolId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tool not found")
+        );
+
+        recipeProcess.addTool(tool);
+
+        return recipeProcessRepository.save(recipeProcess);
+    }
+
+    public RecipeProcess removeTool(Long id, Long toolId) {
+        RecipeProcess recipeProcess = recipeProcessRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "RecipeProcess not found")
+        );
+
+        Tool tool = toolRepository.findById(toolId).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tool not found")
+        );
+
+        recipeProcess.removeTool(tool);
+
+        return recipeProcessRepository.save(recipeProcess);
+    }
 }

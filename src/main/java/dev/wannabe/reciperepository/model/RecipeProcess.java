@@ -48,7 +48,7 @@ public class RecipeProcess {
     @NotBlank
     private String typeofWork;
 
-
+    @JsonIgnoreProperties("recipeProcesses")
     @ManyToMany
     @JoinTable(
             name = "ToolForStep",
@@ -97,6 +97,10 @@ public class RecipeProcess {
 
     public void addTool(Tool tool) {
         tools.add(tool);
+    }
+
+    public void removeTool(Tool tool) {
+        tools.remove(tool);
     }
 
 

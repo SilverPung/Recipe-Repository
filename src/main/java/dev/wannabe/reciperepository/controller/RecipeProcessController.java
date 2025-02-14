@@ -53,7 +53,17 @@ public class RecipeProcessController {
         return new ResponseEntity<>(updatedRecipeProcess, HttpStatus.OK);
     }
 
+    @PostMapping("/recipe-processes/{id}/tools/{toolId}")
+    public ResponseEntity<RecipeProcess> addToolToRecipeProcess(@PathVariable Long id, @PathVariable Long toolId) {
+        RecipeProcess updatedRecipeProcess = recipeProcessService.addTool(id, toolId);
+        return new ResponseEntity<>(updatedRecipeProcess, HttpStatus.OK);
+    }
 
+    @DeleteMapping("/recipe-processes/{id}/tools/{toolId}")
+    public ResponseEntity<RecipeProcess> removeToolFromRecipeProcess(@PathVariable Long id, @PathVariable Long toolId) {
+        RecipeProcess updatedRecipeProcess = recipeProcessService.removeTool(id, toolId);
+        return new ResponseEntity<>(updatedRecipeProcess, HttpStatus.OK);
+    }
 
 
 
