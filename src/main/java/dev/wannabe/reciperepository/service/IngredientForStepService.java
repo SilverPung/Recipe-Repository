@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 
 @Service
 public class IngredientForStepService {
@@ -77,6 +79,13 @@ public class IngredientForStepService {
 
         ingredientForStep.setQuantityNeeded(ingredientForStepRequest.getQuantityNeeded());
 
-        return ingredientForStepRepository.save(ingredientForStep);
+        try{
+            return ingredientForStepRepository.save(ingredientForStep);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "IngredientForStep already exists", e);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error saving IngredientForStep", e);
+        }
+
     }
 }

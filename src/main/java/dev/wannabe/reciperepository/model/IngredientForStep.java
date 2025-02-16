@@ -16,7 +16,6 @@ public class IngredientForStep {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
     @JsonIgnoreProperties("ingredientForSteps")
     @ManyToOne
     private Ingredient ingredient;

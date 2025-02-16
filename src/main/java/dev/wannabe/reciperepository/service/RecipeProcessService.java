@@ -6,8 +6,8 @@ import dev.wannabe.reciperepository.model.request.RecipeProcessRequest;
 import dev.wannabe.reciperepository.repository.RecipeProcessRepository;
 import dev.wannabe.reciperepository.repository.RecipeRepository;
 import dev.wannabe.reciperepository.repository.ToolRepository;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -37,21 +37,10 @@ public class RecipeProcessService {
         return recipeProcessRepository.findById(id).orElse(null);
     }
 
-    public RecipeProcess save(RecipeProcess recipeProcess) {
-        return recipeProcessRepository.save(recipeProcess);
-    }
-
     public RecipeProcess save(RecipeProcessRequest recipeProcessRequest) {
         RecipeProcess recipeProcess = new RecipeProcess();
 
-        recipeProcess.setRecipe(recipeRepository.findById(recipeProcessRequest.getRecipeId()).orElseThrow(
-                () -> new ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Recipe not found")
-        ));
-
-        recipeProcess.setData(recipeProcessRequest);
-
-
-        return recipeProcessRepository.save(recipeProcess);
+        return getRecipeProcess(recipeProcessRequest, recipeProcess);
     }
 
     public RecipeProcess update(long recipeProcess_id, RecipeProcessRequest recipeProcessRequest) {
@@ -59,13 +48,7 @@ public class RecipeProcessService {
                 () -> new ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "RecipeProcess not found")
         );
 
-        recipeProcess.setRecipe(recipeRepository.findById(recipeProcessRequest.getRecipeId()).orElseThrow(
-                () -> new ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "Recipe not found")
-        ));
-
-        recipeProcess.setData(recipeProcessRequest);
-
-        return recipeProcessRepository.save(recipeProcess);
+        return getRecipeProcess(recipeProcessRequest, recipeProcess);
     }
 
     public long deleteById(Long id) {
@@ -105,4 +88,22 @@ public class RecipeProcessService {
 
         return recipeProcessRepository.save(recipeProcess);
     }
+
+    private RecipeProcess getRecipeProcess(RecipeProcessRequest recipeProcessRequest, RecipeProcess recipeProcess) {
+        recipeProcess.setRecipe(recipeRepository.
+                findById(recipeProcessRequest.getRecipeId()).
+                orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Recipe not found")
+                ));
+
+        recipeProcess.setData(recipeProcessRequest);
+
+        try{
+            return recipeProcessRepository.save(recipeProcess);
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "RecipeProcess already exists");
+        }
+    }
+
+
 }
