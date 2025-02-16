@@ -11,7 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
+
+import java.util.List;
 
 @Service
 public class IngredientForStepService {
@@ -29,11 +30,8 @@ public class IngredientForStepService {
 
 
 
-    public Iterable<IngredientForStep> findAll() {
+    public List<IngredientForStep> findAll() {
         return ingredientForStepRepository.findAll();
-
-
-
     }
 
     public IngredientForStep findById(Long id) {

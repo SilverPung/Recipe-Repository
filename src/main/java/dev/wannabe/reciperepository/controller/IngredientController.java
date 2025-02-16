@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import dev.wannabe.reciperepository.model.Ingredient;
 
+import java.util.List;
+
 @RequestMapping("/api")
 @RestController
 public class IngredientController {
@@ -22,19 +24,17 @@ public class IngredientController {
     }
 
     @GetMapping("/ingredients")
-    public ResponseEntity<Iterable<Ingredient>> getIngredients() {
-        Iterable<Ingredient> ingredients = ingredientService.findAll();
+    public ResponseEntity<List<Ingredient>> getIngredients() {
+        List<Ingredient> ingredients = ingredientService.findAll();
         return new ResponseEntity<>(ingredients, HttpStatus.OK);
     }
-
     @GetMapping("/ingredients/{id}")
     public ResponseEntity<Ingredient> getIngredientById(@PathVariable Long id) {
         Ingredient ingredient = ingredientService.findById(id);
-        if (ingredient != null) {
-            return new ResponseEntity<>(ingredient, HttpStatus.OK);
-        } else {
+        if (ingredient == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(ingredient, HttpStatus.OK);
     }
 
     @PostMapping("/ingredients")

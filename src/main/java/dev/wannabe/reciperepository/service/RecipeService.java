@@ -6,6 +6,8 @@ import dev.wannabe.reciperepository.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RecipeService {
 
@@ -16,7 +18,7 @@ public class RecipeService {
         this.recipeRepository = recipeRepository;
     }
 
-    public Iterable<Recipe> findAll() {
+    public List<Recipe> findAll() {
         return recipeRepository.findAll();
     }
 

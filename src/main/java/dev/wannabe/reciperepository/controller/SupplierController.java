@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RequestMapping("/api")
 @RestController
@@ -21,19 +23,18 @@ public class SupplierController {
     }
 
     @GetMapping("/suppliers")
-    public ResponseEntity<Iterable<Supplier>> getSuppliers() {
-        Iterable<Supplier> suppliers = supplierService.findAll();
+    public ResponseEntity<List<Supplier>> getSuppliers() {
+        List<Supplier> suppliers = supplierService.findAll();
         return new ResponseEntity<>(suppliers, HttpStatus.OK);
     }
 
     @GetMapping("/suppliers/{id}")
     public ResponseEntity<Supplier> getSupplierById(@PathVariable Long id) {
         Supplier supplier = supplierService.findById(id);
-        if (supplier != null) {
-            return new ResponseEntity<>(supplier, HttpStatus.OK);
-        } else {
+        if (supplier == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(supplier, HttpStatus.OK);
     }
 
     @PostMapping("/suppliers")

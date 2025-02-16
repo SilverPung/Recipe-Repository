@@ -6,6 +6,8 @@ import dev.wannabe.reciperepository.repository.FinalProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FinalProductService {
 
@@ -18,7 +20,7 @@ public class FinalProductService {
 
 
 
-    public Iterable<FinalProduct> findAll() {
+    public List<FinalProduct> findAll() {
         return finalProductRepository.findAll();
     }
 

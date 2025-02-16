@@ -6,6 +6,8 @@ import dev.wannabe.reciperepository.repository.ToolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ToolService {
 
@@ -24,7 +26,7 @@ public class ToolService {
         return toolRepository.findById(id).orElse(null);
     }
 
-    public Iterable<Tool> getAllTools() {
+    public List<Tool> getAllTools() {
         return toolRepository.findAll();
     }
 

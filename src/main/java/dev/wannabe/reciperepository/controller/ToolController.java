@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import dev.wannabe.reciperepository.model.Tool;
 
+import java.util.List;
+
 
 @RequestMapping("/api")
 @RestController
@@ -22,19 +24,18 @@ public class ToolController {
 
 
     @GetMapping("/tools")
-    public ResponseEntity<Iterable<Tool>> getTools() {
-        Iterable<Tool> tools = toolService.getAllTools();
+    public ResponseEntity<List<Tool>> getTools() {
+        List<Tool> tools = toolService.getAllTools();
         return new ResponseEntity<>(tools, HttpStatus.OK);
     }
 
     @GetMapping("/tools/{id}")
     public ResponseEntity<Tool> getToolById(@PathVariable Long id) {
         Tool tool = toolService.getToolById(id);
-        if (tool != null) {
-            return new ResponseEntity<>(tool, HttpStatus.OK);
-        } else {
+        if (tool == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(tool, HttpStatus.OK);
     }
 
     @PostMapping("/tools")

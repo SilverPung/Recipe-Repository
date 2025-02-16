@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RequestMapping("/api")
 @RestController
@@ -22,19 +24,18 @@ public class IngredientForStepController {
     }
 
     @GetMapping("/ingredient-for-step")
-    public ResponseEntity<Iterable<IngredientForStep>> getIngredientForStep() {
-        Iterable<IngredientForStep> ingredientForStep = ingredientForStepService.findAll();
+    public ResponseEntity<List<IngredientForStep>> getIngredientForStep() {
+        List<IngredientForStep> ingredientForStep = ingredientForStepService.findAll();
         return new ResponseEntity<>(ingredientForStep, HttpStatus.OK);
     }
 
     @GetMapping("/ingredient-for-step/{id}")
     public ResponseEntity<IngredientForStep> getIngredientForStepById(@PathVariable Long id) {
         IngredientForStep ingredientForStep = ingredientForStepService.findById(id);
-        if (ingredientForStep != null) {
-            return new ResponseEntity<>(ingredientForStep, HttpStatus.OK);
-        } else {
+        if (ingredientForStep == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(ingredientForStep, HttpStatus.OK);
     }
 
     @PostMapping("/ingredient-for-step")

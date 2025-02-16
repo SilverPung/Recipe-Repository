@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class RecipeProcessController {
@@ -20,19 +22,18 @@ public class RecipeProcessController {
     }
 
     @GetMapping("/recipe-processes")
-    public ResponseEntity<Iterable<RecipeProcess>> getRecipeProcesses() {
-        Iterable<RecipeProcess> recipeProcesses = recipeProcessService.findAll();
+    public ResponseEntity<List<RecipeProcess>> getRecipeProcesses() {
+        List<RecipeProcess> recipeProcesses = recipeProcessService.findAll();
         return new ResponseEntity<>(recipeProcesses, HttpStatus.OK);
     }
 
     @GetMapping("/recipe-processes/{id}")
     public ResponseEntity<RecipeProcess> getRecipeProcessById(@PathVariable Long id) {
         RecipeProcess recipeProcess = recipeProcessService.findById(id);
-        if (recipeProcess != null) {
-            return new ResponseEntity<>(recipeProcess, HttpStatus.OK);
-        } else {
+        if (recipeProcess == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(recipeProcess, HttpStatus.OK);
     }
 
     @PostMapping("/recipe-processes")

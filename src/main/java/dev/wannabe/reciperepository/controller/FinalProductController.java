@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 public class FinalProductController {
@@ -19,19 +21,18 @@ public class FinalProductController {
     }
 
     @GetMapping("/final-products")
-    public ResponseEntity<Iterable<FinalProduct>> getFinalProducts() {
-        Iterable<FinalProduct> products = finalProductService.findAll();
+    public ResponseEntity<List<FinalProduct>> getFinalProducts() {
+        List<FinalProduct> products = finalProductService.findAll();
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @GetMapping("/final-products/{id}")
     public ResponseEntity<FinalProduct> getFinalProductById(@PathVariable Long id) {
         FinalProduct product = finalProductService.findById(id);
-        if (product != null) {
-            return new ResponseEntity<>(product, HttpStatus.OK);
-        } else {
+        if (product == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @PostMapping("/final-products")

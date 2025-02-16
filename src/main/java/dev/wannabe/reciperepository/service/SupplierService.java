@@ -6,6 +6,8 @@ import dev.wannabe.reciperepository.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SupplierService {
 
@@ -18,7 +20,7 @@ public class SupplierService {
 
 
 
-    public Iterable<Supplier> findAll() {
+    public List<Supplier> findAll() {
         return supplierRepository.findAll();
     }
 

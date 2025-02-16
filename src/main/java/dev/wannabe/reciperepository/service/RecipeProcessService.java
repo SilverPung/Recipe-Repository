@@ -13,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import org.springframework.http.HttpStatus;
 
+import java.util.List;
+
 @Service
 public class RecipeProcessService {
 
@@ -29,7 +31,7 @@ public class RecipeProcessService {
         this.toolRepository = toolRepository;
     }
 
-    public Iterable<RecipeProcess> findAll() {
+    public List<RecipeProcess> findAll() {
         return recipeProcessRepository.findAll();
     }
 
