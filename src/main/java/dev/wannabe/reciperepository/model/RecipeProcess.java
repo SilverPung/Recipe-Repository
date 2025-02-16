@@ -58,7 +58,7 @@ public class RecipeProcess {
     private Set<Tool> tools = new HashSet<>();
 
     @JsonIgnoreProperties("recipeProcess")
-    @OneToMany(mappedBy = "recipeProcess")
+    @OneToMany(mappedBy = "recipeProcess", cascade = CascadeType.REMOVE)
     private final Set<IngredientForStep> ingredients = new HashSet<>();
 
     public RecipeProcess() {
