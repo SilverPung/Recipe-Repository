@@ -50,7 +50,7 @@ public class RecipeController {
     @PutMapping("/recipes/{id}")
     public ResponseEntity<Recipe> updateRecipe(@PathVariable Long id, @Valid @RequestBody Recipe recipe) {
         recipe.setId(id);
-        return new ResponseEntity<>(recipeService.save(recipe), HttpStatus.OK);
+        return new ResponseEntity<>(recipeService.update(recipe), HttpStatus.OK);
     }
 
 

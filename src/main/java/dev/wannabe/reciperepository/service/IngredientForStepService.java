@@ -1,6 +1,8 @@
 package dev.wannabe.reciperepository.service;
 
 
+import dev.wannabe.reciperepository.exception.UniqueForeignKeyException;
+import jakarta.persistence.EntityNotFoundException;
 import dev.wannabe.reciperepository.model.IngredientForStep;
 import dev.wannabe.reciperepository.model.request.IngredientForStepRequest;
 import dev.wannabe.reciperepository.repository.IngredientForStepRepository;
@@ -46,12 +48,15 @@ public class IngredientForStepService {
 
 
     public void deleteById(Long id) {
-       ingredientForStepRepository.deleteById(id);
+        if(!ingredientForStepRepository.existsById(id)){
+            throw new EntityNotFoundException("IngredientForStep on id " + id + " not found");
+        }
+        ingredientForStepRepository.deleteById(id);
     }
 
     public IngredientForStep update(Long id, IngredientForStepRequest ingredientForStepRequest) {
         IngredientForStep ingredientForStep = ingredientForStepRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "IngredientForStep not found")
+                () -> new EntityNotFoundException("IngredientForStep on id " + id + " not found")
         );
 
         return getIngredientForStep(ingredientForStepRequest, ingredientForStep);
@@ -61,13 +66,13 @@ public class IngredientForStepService {
         ingredientForStep.setIngredient(ingredientRepository.
                 findById(ingredientForStepRequest.getIngredientId()).
                 orElseThrow(
-                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found")
+                        () -> new EntityNotFoundException("Ingredient on id " + ingredientForStepRequest.getIngredientId() + " not found")
                 ));
 
         ingredientForStep.setRecipeProcess(recipeProcessRepository.
                 findById(ingredientForStepRequest.getStepId()).
                 orElseThrow(
-                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "RecipeProcess not found")
+                        () -> new EntityNotFoundException("RecipeProcess on id " + ingredientForStepRequest.getStepId() + " not found")
                 ));
 
         ingredientForStep.setQuantityNeeded(ingredientForStepRequest.getQuantityNeeded());
@@ -75,10 +80,11 @@ public class IngredientForStepService {
         try{
             return ingredientForStepRepository.save(ingredientForStep);
         } catch (DataIntegrityViolationException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "IngredientForStep already exists", e);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error saving IngredientForStep", e);
+            if(e.getMessage().contains("Unique index or primary key violation")){
+                throw new UniqueForeignKeyException("IngredientForStep with this Ingredient '" + ingredientForStepRequest.getIngredientId() + "' and Step '" + ingredientForStepRequest.getStepId() + "' already exists");
+            } else {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "IngredientForStep already exists");
+            }
         }
-
     }
 }

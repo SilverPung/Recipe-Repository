@@ -1,14 +1,13 @@
 package dev.wannabe.reciperepository.service;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import dev.wannabe.reciperepository.model.Ingredient;
 import dev.wannabe.reciperepository.model.request.IngredientResponse;
 import dev.wannabe.reciperepository.repository.IngredientRepository;
 import dev.wannabe.reciperepository.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class IngredientService {
     public Ingredient save(IngredientResponse ingredientResponse) {
         Ingredient ingredient = new Ingredient();
         ingredient.setSupplier(supplierRepository.findById(ingredientResponse.getSupplierId()).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found")
+                () -> new EntityNotFoundException("Supplier on id " + ingredientResponse.getSupplierId() + " not found")
         ));
         ingredient.setData(ingredientResponse);
         return ingredientRepository.save(ingredient);
@@ -43,16 +42,19 @@ public class IngredientService {
 
     public Ingredient update(Long id, IngredientResponse ingredientResponse) {
         Ingredient ingredient = ingredientRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Ingredient not found")
+                () -> new EntityNotFoundException("Ingredient on id " + id + " not found")
         );
         ingredient.setSupplier(supplierRepository.findById(ingredientResponse.getSupplierId()).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Supplier not found")
+                () -> new EntityNotFoundException("Supplier on id " + ingredientResponse.getSupplierId() + " not found")
         ));
         ingredient.setData(ingredientResponse);
         return ingredientRepository.save(ingredient);
     }
 
     public void deleteById(Long id) {
+        if(!ingredientRepository.existsById(id)){
+            throw new EntityNotFoundException("Ingredient on id " + id + " not found");
+        }
         ingredientRepository.deleteById(id);
     }
 }

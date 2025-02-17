@@ -49,6 +49,6 @@ public class FinalProductController {
     @PutMapping("/final-products/{id}")
     public ResponseEntity<FinalProduct> updateFinalProduct(@PathVariable Long id, @RequestBody FinalProduct finalProduct) {
         finalProduct.setId(id);
-        return new ResponseEntity<>(finalProductService.save(finalProduct), HttpStatus.OK);
+        return new ResponseEntity<>(finalProductService.update(finalProduct), HttpStatus.OK);
     }
 }

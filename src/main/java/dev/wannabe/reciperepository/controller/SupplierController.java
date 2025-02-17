@@ -44,7 +44,7 @@ public class SupplierController {
     @PutMapping("/suppliers/{id}")
     public ResponseEntity<Supplier> updateSupplier(@PathVariable Long id, @RequestBody Supplier supplier) {
         supplier.setId(id);
-        return new ResponseEntity<>(supplierService.save(supplier), HttpStatus.OK);
+        return new ResponseEntity<>(supplierService.update(supplier), HttpStatus.OK);
     }
 
     @DeleteMapping("/suppliers/{id}")

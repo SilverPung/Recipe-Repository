@@ -1,5 +1,7 @@
 package dev.wannabe.reciperepository.service;
 
+import dev.wannabe.reciperepository.exception.UniqueForeignKeyException;
+import jakarta.persistence.EntityNotFoundException;
 import dev.wannabe.reciperepository.model.RecipeProcess;
 import dev.wannabe.reciperepository.model.Tool;
 import dev.wannabe.reciperepository.model.request.RecipeProcessRequest;
@@ -47,13 +49,16 @@ public class RecipeProcessService {
 
     public RecipeProcess update(long recipeProcess_id, RecipeProcessRequest recipeProcessRequest) {
         RecipeProcess recipeProcess = recipeProcessRepository.findById(recipeProcess_id).orElseThrow(
-                () -> new ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND, "RecipeProcess not found")
+                () -> new EntityNotFoundException("RecipeProcess on id " + recipeProcess_id + " not found")
         );
 
         return getRecipeProcess(recipeProcessRequest, recipeProcess);
     }
 
     public void deleteById(Long id) {
+        if(!recipeProcessRepository.existsById(id)){
+            throw new EntityNotFoundException("RecipeProcess on id " + id + " not found");
+        }
         recipeProcessRepository.deleteById(id);
     }
 
@@ -74,11 +79,11 @@ public class RecipeProcessService {
 
     public void removeTool(Long id, Long toolId) {
         RecipeProcess recipeProcess = recipeProcessRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "RecipeProcess not found")
+                () -> new EntityNotFoundException("RecipeProcess on id " + id + " not found")
         );
 
         Tool tool = toolRepository.findById(toolId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tool not found")
+                () -> new EntityNotFoundException("Tool on id " + toolId + " not found")
         );
 
         recipeProcess.removeTool(tool);
@@ -90,7 +95,7 @@ public class RecipeProcessService {
         recipeProcess.setRecipe(recipeRepository.
                 findById(recipeProcessRequest.getRecipeId()).
                 orElseThrow(
-                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Recipe not found")
+                        () -> new EntityNotFoundException("Recipe on id " + recipeProcessRequest.getRecipeId() + " not found")
                 ));
 
         recipeProcess.setData(recipeProcessRequest);
@@ -98,7 +103,11 @@ public class RecipeProcessService {
         try{
             return recipeProcessRepository.save(recipeProcess);
         } catch (DataIntegrityViolationException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "RecipeProcess already exists");
+            if(e.getMessage().contains("Unique index or primary key violation")){
+                throw new UniqueForeignKeyException("RecipeProcess with this recipe '"+recipeProcessRequest.getRecipeId()+"' and stepNumber '"+recipeProcessRequest.getStepNumber()+"' already exists");
+            } else {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "RecipeProcess already exists", e);
+            }
         }
     }
 
