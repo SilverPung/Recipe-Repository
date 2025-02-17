@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 
 @RequestMapping("/api")
@@ -24,36 +25,32 @@ public class SupplierController {
 
     @GetMapping("/suppliers")
     public ResponseEntity<List<Supplier>> getSuppliers() {
-        List<Supplier> suppliers = supplierService.findAll();
-        return new ResponseEntity<>(suppliers, HttpStatus.OK);
+        return new ResponseEntity<>(supplierService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/suppliers/{id}")
     public ResponseEntity<Supplier> getSupplierById(@PathVariable Long id) {
-        Supplier supplier = supplierService.findById(id);
-        if (supplier == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(supplier, HttpStatus.OK);
+        return Stream.of(supplierService.findById(id))
+                .map(supplier -> new ResponseEntity<>(supplier, HttpStatus.OK))
+                .findFirst()
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/suppliers")
     public ResponseEntity<Supplier> createSupplier(@RequestBody Supplier supplier) {
-        Supplier createdSupplier = supplierService.save(supplier);
-        return new ResponseEntity<>(createdSupplier, HttpStatus.CREATED);
+        return new ResponseEntity<>(supplierService.save(supplier), HttpStatus.CREATED);
     }
 
     @PutMapping("/suppliers/{id}")
     public ResponseEntity<Supplier> updateSupplier(@PathVariable Long id, @RequestBody Supplier supplier) {
         supplier.setId(id);
-        Supplier updatedSupplier = supplierService.save(supplier);
-        return new ResponseEntity<>(updatedSupplier, HttpStatus.OK);
+        return new ResponseEntity<>(supplierService.save(supplier), HttpStatus.OK);
     }
 
     @DeleteMapping("/suppliers/{id}")
-    public ResponseEntity<Long> deleteSupplier(@PathVariable Long id) {
-        long deletedId = supplierService.deleteById(id);
-        return new ResponseEntity<>(deletedId, HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> deleteSupplier(@PathVariable Long id) {
+        supplierService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

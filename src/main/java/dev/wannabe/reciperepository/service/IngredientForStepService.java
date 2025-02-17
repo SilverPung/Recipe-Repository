@@ -45,13 +45,8 @@ public class IngredientForStepService {
 
 
 
-    public long deleteById(Long id) {
-        boolean exists = ingredientForStepRepository.existsById(id);
-        if (exists) {
-            ingredientForStepRepository.deleteById(id);
-            return id;
-        }
-        return -1;
+    public void deleteById(Long id) {
+       ingredientForStepRepository.deleteById(id);
     }
 
     public IngredientForStep update(Long id, IngredientForStepRequest ingredientForStepRequest) {

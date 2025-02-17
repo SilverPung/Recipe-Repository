@@ -22,7 +22,7 @@ public class ToolService {
         return toolRepository.save(tool);
     }
 
-    public Tool getToolById(Long id) {
+    public Tool findById(Long id) {
         return toolRepository.findById(id).orElse(null);
     }
 
@@ -30,12 +30,7 @@ public class ToolService {
         return toolRepository.findAll();
     }
 
-    public long deleteTool(Long id) {
-        boolean exists = toolRepository.existsById(id);
-        if (exists) {
-            toolRepository.deleteById(id);
-            return id;
-        }
-        return -1;
+    public void deleteById(Long id) {
+        toolRepository.deleteById(id);
     }
 }

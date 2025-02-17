@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 
 @RequestMapping("/api")
@@ -25,36 +26,32 @@ public class IngredientForStepController {
 
     @GetMapping("/ingredient-for-step")
     public ResponseEntity<List<IngredientForStep>> getIngredientForStep() {
-        List<IngredientForStep> ingredientForStep = ingredientForStepService.findAll();
-        return new ResponseEntity<>(ingredientForStep, HttpStatus.OK);
+        return new ResponseEntity<>(ingredientForStepService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/ingredient-for-step/{id}")
     public ResponseEntity<IngredientForStep> getIngredientForStepById(@PathVariable Long id) {
-        IngredientForStep ingredientForStep = ingredientForStepService.findById(id);
-        if (ingredientForStep == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(ingredientForStep, HttpStatus.OK);
+        return Stream.of(ingredientForStepService.findById(id))
+                .map(ingredientForStep -> new ResponseEntity<>(ingredientForStep, HttpStatus.OK))
+                .findFirst()
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/ingredient-for-step")
     public ResponseEntity<IngredientForStep> saveIngredientForStep(@RequestBody IngredientForStepRequest ingredientForStepRequest) {
-        IngredientForStep savedIngredientForStep = ingredientForStepService.save(ingredientForStepRequest);
-        return new ResponseEntity<>(savedIngredientForStep, HttpStatus.CREATED);
+        return new ResponseEntity<>(ingredientForStepService.save(ingredientForStepRequest), HttpStatus.CREATED);
 
     }
 
     @DeleteMapping("/ingredient-for-step/{id}")
-    public ResponseEntity<Long> deleteIngredientForStep(@PathVariable Long id) {
-        long deletedId = ingredientForStepService.deleteById(id);
-        return new ResponseEntity<>(deletedId, HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> deleteIngredientForStep(@PathVariable Long id) {
+        ingredientForStepService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
     @PutMapping("/ingredient-for-step/{id}")
     public ResponseEntity<IngredientForStep> updateIngredientForStep(@PathVariable Long id, @RequestBody IngredientForStepRequest ingredientForStepRequest) {
-        IngredientForStep updatedIngredientForStep = ingredientForStepService.update(id, ingredientForStepRequest);
-        return new ResponseEntity<>(updatedIngredientForStep, HttpStatus.OK);
+        return new ResponseEntity<>(ingredientForStepService.update(id, ingredientForStepRequest), HttpStatus.OK);
     }
 }

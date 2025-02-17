@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Stream;
+
 
 @RestController
 @RequestMapping("/api")
@@ -22,35 +24,31 @@ public class FinalProductController {
 
     @GetMapping("/final-products")
     public ResponseEntity<List<FinalProduct>> getFinalProducts() {
-        List<FinalProduct> products = finalProductService.findAll();
-        return new ResponseEntity<>(products, HttpStatus.OK);
+        return new ResponseEntity<>(finalProductService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/final-products/{id}")
     public ResponseEntity<FinalProduct> getFinalProductById(@PathVariable Long id) {
-        FinalProduct product = finalProductService.findById(id);
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(product, HttpStatus.OK);
+       return Stream.of(finalProductService.findById(id))
+               .map(finalProduct -> new ResponseEntity<>(finalProduct, HttpStatus.OK))
+               .findFirst()
+               .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/final-products")
     public ResponseEntity<FinalProduct> saveFinalProduct(@RequestBody FinalProduct finalProduct) {
-        FinalProduct savedProduct = finalProductService.save(finalProduct);
-        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+        return new ResponseEntity<>(finalProductService.save(finalProduct), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/final-products/{id}")
-    public ResponseEntity<Long> deleteFinalProduct(@PathVariable Long id) {
-        long deletedId = finalProductService.deleteById(id);
-        return new ResponseEntity<>(deletedId, HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> deleteFinalProduct(@PathVariable Long id) {
+        finalProductService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/final-products/{id}")
     public ResponseEntity<FinalProduct> updateFinalProduct(@PathVariable Long id, @RequestBody FinalProduct finalProduct) {
         finalProduct.setId(id);
-        FinalProduct updatedProduct = finalProductService.save(finalProduct);
-        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+        return new ResponseEntity<>(finalProductService.save(finalProduct), HttpStatus.OK);
     }
 }

@@ -30,13 +30,8 @@ public class RecipeService {
         return recipeRepository.save(recipe);
     }
 
-    public long deleteById(Long id) {
-        boolean exists = recipeRepository.existsById(id);
-        if (exists) {
-            recipeRepository.deleteById(id);
-            return id;
-        }
-        return -1;
+    public void deleteById(Long id) {
+        recipeRepository.deleteById(id);
     }
 
 

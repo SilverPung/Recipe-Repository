@@ -53,13 +53,8 @@ public class RecipeProcessService {
         return getRecipeProcess(recipeProcessRequest, recipeProcess);
     }
 
-    public long deleteById(Long id) {
-        boolean exists = recipeProcessRepository.existsById(id);
-        if (exists) {
-            recipeProcessRepository.deleteById(id);
-            return id;
-        }
-        return -1;
+    public void deleteById(Long id) {
+        recipeProcessRepository.deleteById(id);
     }
 
 
@@ -77,7 +72,7 @@ public class RecipeProcessService {
         return recipeProcessRepository.save(recipeProcess);
     }
 
-    public RecipeProcess removeTool(Long id, Long toolId) {
+    public void removeTool(Long id, Long toolId) {
         RecipeProcess recipeProcess = recipeProcessRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "RecipeProcess not found")
         );
@@ -87,8 +82,8 @@ public class RecipeProcessService {
         );
 
         recipeProcess.removeTool(tool);
+        recipeProcessRepository.save(recipeProcess);
 
-        return recipeProcessRepository.save(recipeProcess);
     }
 
     private RecipeProcess getRecipeProcess(RecipeProcessRequest recipeProcessRequest, RecipeProcess recipeProcess) {

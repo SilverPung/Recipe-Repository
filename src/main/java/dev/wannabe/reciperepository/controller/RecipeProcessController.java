@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api")
@@ -23,52 +24,42 @@ public class RecipeProcessController {
 
     @GetMapping("/recipe-processes")
     public ResponseEntity<List<RecipeProcess>> getRecipeProcesses() {
-        List<RecipeProcess> recipeProcesses = recipeProcessService.findAll();
-        return new ResponseEntity<>(recipeProcesses, HttpStatus.OK);
+        return new ResponseEntity<>(recipeProcessService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/recipe-processes/{id}")
     public ResponseEntity<RecipeProcess> getRecipeProcessById(@PathVariable Long id) {
-        RecipeProcess recipeProcess = recipeProcessService.findById(id);
-        if (recipeProcess == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(recipeProcess, HttpStatus.OK);
+        return Stream.of(recipeProcessService.findById(id))
+                .map(recipeProcess -> new ResponseEntity<>(recipeProcess, HttpStatus.OK))
+                .findFirst()
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/recipe-processes")
     public ResponseEntity<RecipeProcess> saveRecipeProcess(@Valid @RequestBody RecipeProcessRequest recipeProcessRequest) {
-        RecipeProcess savedRecipeProcess = recipeProcessService.save(recipeProcessRequest);
-        return new ResponseEntity<>(savedRecipeProcess, HttpStatus.CREATED);
+        return new ResponseEntity<>(recipeProcessService.save(recipeProcessRequest), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/recipe-processes/{id}")
-    public ResponseEntity<Long> deleteRecipeProcess(@PathVariable Long id) {
-        long deletedId = recipeProcessService.deleteById(id);
-        return new ResponseEntity<>(deletedId,HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> deleteRecipeProcess(@PathVariable Long id) {
+        recipeProcessService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/recipe-processes/{id}")
     public ResponseEntity<RecipeProcess> updateRecipeProcess(@PathVariable Long id, @Valid @RequestBody RecipeProcessRequest recipeProcessRequest) {
-        RecipeProcess updatedRecipeProcess = recipeProcessService.update(id, recipeProcessRequest);
-        return new ResponseEntity<>(updatedRecipeProcess, HttpStatus.OK);
+        return new ResponseEntity<>(recipeProcessService.update(id, recipeProcessRequest), HttpStatus.OK);
     }
 
     @PostMapping("/recipe-processes/{id}/tools/{toolId}")
     public ResponseEntity<RecipeProcess> addToolToRecipeProcess(@PathVariable Long id, @PathVariable Long toolId) {
-        RecipeProcess updatedRecipeProcess = recipeProcessService.addTool(id, toolId);
-        return new ResponseEntity<>(updatedRecipeProcess, HttpStatus.OK);
+        return new ResponseEntity<>(recipeProcessService.addTool(id, toolId), HttpStatus.OK);
     }
 
     @DeleteMapping("/recipe-processes/{id}/tools/{toolId}")
-    public ResponseEntity<RecipeProcess> removeToolFromRecipeProcess(@PathVariable Long id, @PathVariable Long toolId) {
-        RecipeProcess updatedRecipeProcess = recipeProcessService.removeTool(id, toolId);
-        return new ResponseEntity<>(updatedRecipeProcess, HttpStatus.OK);
+    public ResponseEntity<Void> removeToolFromRecipeProcess(@PathVariable Long id, @PathVariable Long toolId) {
+        recipeProcessService.removeTool(id, toolId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
-
-
-
 
 }

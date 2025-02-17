@@ -52,12 +52,7 @@ public class IngredientService {
         return ingredientRepository.save(ingredient);
     }
 
-    public long deleteById(Long id) {
-        boolean exists = ingredientRepository.existsById(id);
-        if (exists) {
-            ingredientRepository.deleteById(id);
-            return id;
-        }
-        return -1;
+    public void deleteById(Long id) {
+        ingredientRepository.deleteById(id);
     }
 }

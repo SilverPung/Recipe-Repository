@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import dev.wannabe.reciperepository.model.Tool;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 
 @RequestMapping("/api")
@@ -25,41 +26,32 @@ public class ToolController {
 
     @GetMapping("/tools")
     public ResponseEntity<List<Tool>> getTools() {
-        List<Tool> tools = toolService.getAllTools();
-        return new ResponseEntity<>(tools, HttpStatus.OK);
+        return new ResponseEntity<>(toolService.getAllTools(), HttpStatus.OK);
     }
 
     @GetMapping("/tools/{id}")
     public ResponseEntity<Tool> getToolById(@PathVariable Long id) {
-        Tool tool = toolService.getToolById(id);
-        if (tool == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(tool, HttpStatus.OK);
+        return Stream.of(toolService.findById(id))
+                .map(tool -> new ResponseEntity<>(tool, HttpStatus.OK))
+                .findFirst()
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/tools")
     public ResponseEntity<Tool> createTool(@RequestBody Tool tool) {
-        Tool newTool = toolService.save(tool);
-        return new ResponseEntity<>(newTool, HttpStatus.CREATED);
+        return new ResponseEntity<>(toolService.save(tool), HttpStatus.CREATED);
     }
 
     @PutMapping("/tools/{id}")
     public ResponseEntity<Tool> updateTool(@PathVariable Long id, @RequestBody Tool tool) {
         tool.setId(id);
-        Tool updatedTool = toolService.save(tool);
-
-        if (updatedTool != null) {
-            return new ResponseEntity<>(updatedTool, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(toolService.save(tool), HttpStatus.OK);
     }
 
     @DeleteMapping("/tools/{id}")
-    public ResponseEntity<Long> deleteTool(@PathVariable Long id) {
-        long deletedId = toolService.deleteTool(id);
-        return new ResponseEntity<>(deletedId, HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> deleteTool(@PathVariable Long id) {
+        toolService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

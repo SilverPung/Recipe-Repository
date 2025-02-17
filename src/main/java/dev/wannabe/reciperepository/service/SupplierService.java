@@ -32,13 +32,7 @@ public class SupplierService {
         return supplierRepository.save(supplier);
     }
 
-    public long deleteById(Long id) {
-        boolean exists = supplierRepository.existsById(id);
-        if (exists) {
-            supplierRepository.deleteById(id);
-            return id;
-        } else {
-            return -1;
-        }
+    public void deleteById(Long id) {
+        supplierRepository.deleteById(id);
     }
 }

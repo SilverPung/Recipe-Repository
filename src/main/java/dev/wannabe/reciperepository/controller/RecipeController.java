@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/api")
@@ -24,36 +25,32 @@ public class RecipeController {
 
     @GetMapping("/recipes")
     public ResponseEntity<List<Recipe>> getRecipes() {
-        List<Recipe> recipes = recipeService.findAll();
-        return new ResponseEntity<>(recipes, HttpStatus.OK);
+        return new ResponseEntity<>(recipeService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/recipes/{id}")
     public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
-        Recipe recipe = recipeService.findById(id);
-        if (recipe == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(recipe, HttpStatus.OK);
+        return Stream.of(recipeService.findById(id))
+                .map(recipe -> new ResponseEntity<>(recipe, HttpStatus.OK))
+                .findFirst()
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/recipes")
     public ResponseEntity<Recipe> saveRecipe(@Valid @RequestBody Recipe recipe) {
-        Recipe savedRecipe = recipeService.save(recipe);
-        return new ResponseEntity<>(savedRecipe, HttpStatus.CREATED);
+        return new ResponseEntity<>(recipeService.save(recipe), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/recipes/{id}")
-    public ResponseEntity<Long> deleteRecipe(@PathVariable Long id) {
-        long deletedId = recipeService.deleteById(id);
-        return new ResponseEntity<>(deletedId,HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> deleteRecipe(@PathVariable Long id) {
+        recipeService.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/recipes/{id}")
     public ResponseEntity<Recipe> updateRecipe(@PathVariable Long id, @Valid @RequestBody Recipe recipe) {
         recipe.setId(id);
-        Recipe updatedRecipe = recipeService.save(recipe);
-        return new ResponseEntity<>(updatedRecipe, HttpStatus.OK);
+        return new ResponseEntity<>(recipeService.save(recipe), HttpStatus.OK);
     }
 
 
