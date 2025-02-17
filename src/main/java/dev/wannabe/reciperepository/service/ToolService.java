@@ -31,10 +31,12 @@ public class ToolService {
     }
 
     public Tool findById(Long id) {
-        return toolRepository.findById(id).orElse(null);
+        return toolRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Tool on id " + id + " not found")
+        );
     }
 
-    public List<Tool> getAllTools() {
+    public List<Tool> findAll() {
         return toolRepository.findAll();
     }
 

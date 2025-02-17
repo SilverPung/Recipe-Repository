@@ -37,7 +37,9 @@ public class IngredientForStepService {
     }
 
     public IngredientForStep findById(Long id) {
-        return ingredientForStepRepository.findById(id).orElse(null);
+        return ingredientForStepRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("IngredientForStep on id " + id + " not found")
+        );
     }
 
     public IngredientForStep save(IngredientForStepRequest ingredientForStepRequest) {

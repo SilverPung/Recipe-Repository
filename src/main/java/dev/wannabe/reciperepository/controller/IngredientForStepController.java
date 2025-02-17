@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Stream;
+
 
 
 @RequestMapping("/api")
@@ -26,32 +26,29 @@ public class IngredientForStepController {
 
     @GetMapping("/ingredient-for-step")
     public ResponseEntity<List<IngredientForStep>> getIngredientForStep() {
-        return new ResponseEntity<>(ingredientForStepService.findAll(), HttpStatus.OK);
+        return ResponseEntity.ok(ingredientForStepService.findAll());
     }
 
     @GetMapping("/ingredient-for-step/{id}")
     public ResponseEntity<IngredientForStep> getIngredientForStepById(@PathVariable Long id) {
-        return Stream.of(ingredientForStepService.findById(id))
-                .map(ingredientForStep -> new ResponseEntity<>(ingredientForStep, HttpStatus.OK))
-                .findFirst()
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseEntity.ok(ingredientForStepService.findById(id));
     }
 
     @PostMapping("/ingredient-for-step")
     public ResponseEntity<IngredientForStep> saveIngredientForStep(@RequestBody IngredientForStepRequest ingredientForStepRequest) {
-        return new ResponseEntity<>(ingredientForStepService.save(ingredientForStepRequest), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ingredientForStepService.save(ingredientForStepRequest));
 
     }
 
     @DeleteMapping("/ingredient-for-step/{id}")
     public ResponseEntity<Void> deleteIngredientForStep(@PathVariable Long id) {
         ingredientForStepService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
 
     @PutMapping("/ingredient-for-step/{id}")
     public ResponseEntity<IngredientForStep> updateIngredientForStep(@PathVariable Long id, @RequestBody IngredientForStepRequest ingredientForStepRequest) {
-        return new ResponseEntity<>(ingredientForStepService.update(id, ingredientForStepRequest), HttpStatus.OK);
+        return ResponseEntity.ok(ingredientForStepService.update(id, ingredientForStepRequest));
     }
 }

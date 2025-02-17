@@ -28,7 +28,9 @@ public class IngredientService {
     }
 
     public Ingredient findById(Long id) {
-        return ingredientRepository.findById(id).orElse(null);
+        return ingredientRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Ingredient on id " + id + " not found")
+        );
     }
 
     public Ingredient save(IngredientResponse ingredientResponse) {

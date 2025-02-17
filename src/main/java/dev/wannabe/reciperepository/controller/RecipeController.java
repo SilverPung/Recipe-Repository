@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.stream.Stream;
+
 
 @RestController
 @RequestMapping("/api")
@@ -25,32 +25,29 @@ public class RecipeController {
 
     @GetMapping("/recipes")
     public ResponseEntity<List<Recipe>> getRecipes() {
-        return new ResponseEntity<>(recipeService.findAll(), HttpStatus.OK);
+        return ResponseEntity.ok(recipeService.findAll());
     }
 
     @GetMapping("/recipes/{id}")
     public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
-        return Stream.of(recipeService.findById(id))
-                .map(recipe -> new ResponseEntity<>(recipe, HttpStatus.OK))
-                .findFirst()
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseEntity.ok(recipeService.findById(id));
     }
 
     @PostMapping("/recipes")
     public ResponseEntity<Recipe> saveRecipe(@Valid @RequestBody Recipe recipe) {
-        return new ResponseEntity<>(recipeService.save(recipe), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.save(recipe));
     }
 
     @DeleteMapping("/recipes/{id}")
     public ResponseEntity<Void> deleteRecipe(@PathVariable Long id) {
         recipeService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/recipes/{id}")
     public ResponseEntity<Recipe> updateRecipe(@PathVariable Long id, @Valid @RequestBody Recipe recipe) {
         recipe.setId(id);
-        return new ResponseEntity<>(recipeService.update(recipe), HttpStatus.OK);
+        return ResponseEntity.ok(recipeService.save(recipe));
     }
 
 

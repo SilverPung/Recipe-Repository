@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Stream;
+
 
 
 @RequestMapping("/api")
@@ -25,32 +25,29 @@ public class SupplierController {
 
     @GetMapping("/suppliers")
     public ResponseEntity<List<Supplier>> getSuppliers() {
-        return new ResponseEntity<>(supplierService.findAll(), HttpStatus.OK);
+        return ResponseEntity.ok(supplierService.findAll());
     }
 
     @GetMapping("/suppliers/{id}")
     public ResponseEntity<Supplier> getSupplierById(@PathVariable Long id) {
-        return Stream.of(supplierService.findById(id))
-                .map(supplier -> new ResponseEntity<>(supplier, HttpStatus.OK))
-                .findFirst()
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseEntity.ok(supplierService.findById(id));
     }
 
     @PostMapping("/suppliers")
     public ResponseEntity<Supplier> createSupplier(@RequestBody Supplier supplier) {
-        return new ResponseEntity<>(supplierService.save(supplier), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(supplierService.save(supplier));
     }
 
     @PutMapping("/suppliers/{id}")
     public ResponseEntity<Supplier> updateSupplier(@PathVariable Long id, @RequestBody Supplier supplier) {
         supplier.setId(id);
-        return new ResponseEntity<>(supplierService.update(supplier), HttpStatus.OK);
+        return ResponseEntity.ok(supplierService.save(supplier));
     }
 
     @DeleteMapping("/suppliers/{id}")
     public ResponseEntity<Void> deleteSupplier(@PathVariable Long id) {
         supplierService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
 

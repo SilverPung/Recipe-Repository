@@ -26,7 +26,9 @@ public class SupplierService {
     }
 
     public Supplier findById(Long id) {
-        return supplierRepository.findById(id).orElse(null);
+        return supplierRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Supplier on id " + id + " not found")
+        );
     }
 
     public Supplier save(Supplier supplier) {

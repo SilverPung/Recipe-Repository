@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import dev.wannabe.reciperepository.model.Tool;
 
 import java.util.List;
-import java.util.stream.Stream;
+
 
 
 @RequestMapping("/api")
@@ -26,32 +26,29 @@ public class ToolController {
 
     @GetMapping("/tools")
     public ResponseEntity<List<Tool>> getTools() {
-        return new ResponseEntity<>(toolService.getAllTools(), HttpStatus.OK);
+        return ResponseEntity.ok(toolService.findAll());
     }
 
     @GetMapping("/tools/{id}")
     public ResponseEntity<Tool> getToolById(@PathVariable Long id) {
-        return Stream.of(toolService.findById(id))
-                .map(tool -> new ResponseEntity<>(tool, HttpStatus.OK))
-                .findFirst()
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseEntity.ok(toolService.findById(id));
     }
 
     @PostMapping("/tools")
     public ResponseEntity<Tool> createTool(@RequestBody Tool tool) {
-        return new ResponseEntity<>(toolService.save(tool), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(toolService.save(tool));
     }
 
     @PutMapping("/tools/{id}")
     public ResponseEntity<Tool> updateTool(@PathVariable Long id, @RequestBody Tool tool) {
         tool.setId(id);
-        return new ResponseEntity<>(toolService.update(tool), HttpStatus.OK);
+        return ResponseEntity.ok(toolService.save(tool));
     }
 
     @DeleteMapping("/tools/{id}")
     public ResponseEntity<Void> deleteTool(@PathVariable Long id) {
         toolService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
 

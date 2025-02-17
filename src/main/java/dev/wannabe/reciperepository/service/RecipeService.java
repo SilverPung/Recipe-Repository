@@ -24,7 +24,9 @@ public class RecipeService {
     }
 
     public Recipe findById(Long id) {
-        return recipeRepository.findById(id).orElse(null);
+        return recipeRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Recipe on id " + id + " not found")
+        );
     }
 
     public Recipe save(Recipe recipe) {

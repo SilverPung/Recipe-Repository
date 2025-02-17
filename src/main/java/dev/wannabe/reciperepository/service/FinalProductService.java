@@ -26,7 +26,8 @@ public class FinalProductService {
     }
 
     public FinalProduct findById(Long id) {
-        return finalProductRepository.findById(id).orElse(null);
+        return finalProductRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("FinalProduct on id " + id + " not found"));
     }
 
     public FinalProduct save(FinalProduct finalProduct) {

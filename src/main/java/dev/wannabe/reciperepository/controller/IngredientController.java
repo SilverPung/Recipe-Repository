@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import dev.wannabe.reciperepository.model.Ingredient;
 
 import java.util.List;
-import java.util.stream.Stream;
+
 
 @RequestMapping("/api")
 @RestController
@@ -26,31 +26,28 @@ public class IngredientController {
 
     @GetMapping("/ingredients")
     public ResponseEntity<List<Ingredient>> getIngredients() {
-        return new ResponseEntity<>(ingredientService.findAll(), HttpStatus.OK);
+        return ResponseEntity.ok(ingredientService.findAll());
     }
     @GetMapping("/ingredients/{id}")
     public ResponseEntity<Ingredient> getIngredientById(@PathVariable Long id) {
-        return Stream.of(ingredientService.findById(id))
-                .map(ingredient -> new ResponseEntity<>(ingredient, HttpStatus.OK))
-                .findFirst()
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseEntity.ok(ingredientService.findById(id));
     }
 
     @PostMapping("/ingredients")
     public ResponseEntity<Ingredient> createIngredient(@RequestBody IngredientResponse ingredientResponse) {
-        return new ResponseEntity<>(ingredientService.save(ingredientResponse), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ingredientService.save(ingredientResponse));
     }
 
     @PutMapping("/ingredients/{id}")
     public ResponseEntity<Ingredient> updateIngredient(@PathVariable Long id, @RequestBody IngredientResponse ingredientResponse) {
 
-        return new ResponseEntity<>(ingredientService.update(id, ingredientResponse), HttpStatus.OK);
+        return ResponseEntity.ok(ingredientService.update(id, ingredientResponse));
     }
 
     @DeleteMapping("/ingredients/{id}")
     public ResponseEntity<Void> deleteIngredient(@PathVariable Long id) {
         ingredientService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
 
