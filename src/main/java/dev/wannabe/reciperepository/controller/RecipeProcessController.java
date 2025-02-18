@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/recipe-processes")
 public class RecipeProcessController {
 
     private final RecipeProcessService recipeProcessService;
@@ -22,38 +22,38 @@ public class RecipeProcessController {
         this.recipeProcessService = recipeProcessService;
     }
 
-    @GetMapping("/recipe-processes")
+    @GetMapping("")
     public ResponseEntity<List<RecipeProcess>> getRecipeProcesses() {
         return ResponseEntity.ok(recipeProcessService.findAll());
     }
 
-    @GetMapping("/recipe-processes/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<RecipeProcess> getRecipeProcessById(@PathVariable Long id) {
         return ResponseEntity.ok(recipeProcessService.findById(id));
     }
 
-    @PostMapping("/recipe-processes")
+    @PostMapping("")
     public ResponseEntity<RecipeProcess> saveRecipeProcess(@Valid @RequestBody RecipeProcessRequest recipeProcessRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeProcessService.save(recipeProcessRequest));
     }
 
-    @DeleteMapping("/recipe-processes/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRecipeProcess(@PathVariable Long id) {
         recipeProcessService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/recipe-processes/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<RecipeProcess> updateRecipeProcess(@PathVariable Long id, @Valid @RequestBody RecipeProcessRequest recipeProcessRequest) {
         return ResponseEntity.ok(recipeProcessService.update(id, recipeProcessRequest));
     }
 
-    @PostMapping("/recipe-processes/{id}/tools/{toolId}")
+    @PostMapping("/{id}/tools/{toolId}")
     public ResponseEntity<RecipeProcess> addToolToRecipeProcess(@PathVariable Long id, @PathVariable Long toolId) {
         return ResponseEntity.ok(recipeProcessService.addTool(id, toolId));
     }
 
-    @DeleteMapping("/recipe-processes/{id}/tools/{toolId}")
+    @DeleteMapping("/{id}/tools/{toolId}")
     public ResponseEntity<Void> removeToolFromRecipeProcess(@PathVariable Long id, @PathVariable Long toolId) {
         recipeProcessService.removeTool(id, toolId);
         return ResponseEntity.noContent().build();

@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/recipes")
 public class RecipeController {
 
     private final RecipeService recipeService;
@@ -23,28 +23,28 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @GetMapping("/recipes")
+    @GetMapping("")
     public ResponseEntity<List<Recipe>> getRecipes() {
         return ResponseEntity.ok(recipeService.findAll());
     }
 
-    @GetMapping("/recipes/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Recipe> getRecipeById(@PathVariable Long id) {
         return ResponseEntity.ok(recipeService.findById(id));
     }
 
-    @PostMapping("/recipes")
+    @PostMapping("")
     public ResponseEntity<Recipe> saveRecipe(@Valid @RequestBody Recipe recipe) {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.save(recipe));
     }
 
-    @DeleteMapping("/recipes/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRecipe(@PathVariable Long id) {
         recipeService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/recipes/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Recipe> updateRecipe(@PathVariable Long id, @Valid @RequestBody Recipe recipe) {
         recipe.setId(id);
         return ResponseEntity.ok(recipeService.save(recipe));

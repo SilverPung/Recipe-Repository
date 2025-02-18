@@ -13,7 +13,7 @@ import dev.wannabe.reciperepository.model.Ingredient;
 import java.util.List;
 
 
-@RequestMapping("/api")
+@RequestMapping("/api/ingredients")
 @RestController
 public class IngredientController {
 
@@ -24,27 +24,27 @@ public class IngredientController {
         this.ingredientService = ingredientService;
     }
 
-    @GetMapping("/ingredients")
+    @GetMapping("")
     public ResponseEntity<List<Ingredient>> getIngredients() {
         return ResponseEntity.ok(ingredientService.findAll());
     }
-    @GetMapping("/ingredients/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Ingredient> getIngredientById(@PathVariable Long id) {
         return ResponseEntity.ok(ingredientService.findById(id));
     }
 
-    @PostMapping("/ingredients")
+    @PostMapping("")
     public ResponseEntity<Ingredient> createIngredient(@RequestBody IngredientResponse ingredientResponse) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ingredientService.save(ingredientResponse));
     }
 
-    @PutMapping("/ingredients/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Ingredient> updateIngredient(@PathVariable Long id, @RequestBody IngredientResponse ingredientResponse) {
 
         return ResponseEntity.ok(ingredientService.update(id, ingredientResponse));
     }
 
-    @DeleteMapping("/ingredients/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteIngredient(@PathVariable Long id) {
         ingredientService.deleteById(id);
         return ResponseEntity.noContent().build();

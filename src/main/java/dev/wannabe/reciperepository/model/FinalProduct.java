@@ -1,7 +1,7 @@
 package dev.wannabe.reciperepository.model;
 
 
-import dev.wannabe.reciperepository.model.specialenum.FinalProductType;
+import dev.wannabe.reciperepository.model.types.FinalProductType;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

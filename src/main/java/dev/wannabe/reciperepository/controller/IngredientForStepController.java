@@ -13,7 +13,7 @@ import java.util.List;
 
 
 
-@RequestMapping("/api")
+@RequestMapping("/api/ingredient-for-step")
 @RestController
 public class IngredientForStepController {
 
@@ -24,30 +24,30 @@ public class IngredientForStepController {
         this.ingredientForStepService = ingredientForStepService;
     }
 
-    @GetMapping("/ingredient-for-step")
+    @GetMapping("")
     public ResponseEntity<List<IngredientForStep>> getIngredientForStep() {
         return ResponseEntity.ok(ingredientForStepService.findAll());
     }
 
-    @GetMapping("/ingredient-for-step/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<IngredientForStep> getIngredientForStepById(@PathVariable Long id) {
         return ResponseEntity.ok(ingredientForStepService.findById(id));
     }
 
-    @PostMapping("/ingredient-for-step")
+    @PostMapping("")
     public ResponseEntity<IngredientForStep> saveIngredientForStep(@RequestBody IngredientForStepRequest ingredientForStepRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ingredientForStepService.save(ingredientForStepRequest));
 
     }
 
-    @DeleteMapping("/ingredient-for-step/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteIngredientForStep(@PathVariable Long id) {
         ingredientForStepService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
 
-    @PutMapping("/ingredient-for-step/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<IngredientForStep> updateIngredientForStep(@PathVariable Long id, @RequestBody IngredientForStepRequest ingredientForStepRequest) {
         return ResponseEntity.ok(ingredientForStepService.update(id, ingredientForStepRequest));
     }

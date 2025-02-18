@@ -1,4 +1,4 @@
-package dev.wannabe.reciperepository.model.specialenum;
+package dev.wannabe.reciperepository.model.types;
 
 
 
