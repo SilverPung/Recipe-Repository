@@ -1,10 +1,9 @@
 package dev.wannabe.reciperepository.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,31 +16,38 @@ import java.util.Set;
 public class Supplier {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank
     private String name;
-    private String Type;
-    private String Email;
 
-    @OneToMany(mappedBy = "supplier")
+    @NotBlank
+    private String type;
+
+    @NotBlank
+    private String email;
+
+
+    @JsonIgnoreProperties("supplier")
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.REMOVE)
     private final Set<Ingredient> ingredients = new HashSet<>();
 
     public Supplier() {
     }
 
-    public Supplier(String name, String Type, String Email) {
+    public Supplier(String name, String type, String email) {
         this.name = name;
-        this.Type = Type;
-        this.Email = Email;
+        this.type = type;
+        this.email = email;
     }
 
 
-    public Supplier(long id, String name, String Type, String Email) {
+    public Supplier(long id, String name, String type, String email) {
         this.id = id;
         this.name = name;
-        this.Type = Type;
-        this.Email = Email;
+        this.type = type;
+        this.email = email;
     }
 
 

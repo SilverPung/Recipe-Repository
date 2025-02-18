@@ -2,7 +2,10 @@ package dev.wannabe.reciperepository.model;
 
 
 import dev.wannabe.reciperepository.model.specialenum.FinalProductType;
+
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,15 +17,21 @@ import java.util.Date;
 public class FinalProduct {
 
     @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Enumerated(EnumType.STRING)
     private FinalProductType type;
 
+    @NotBlank
     private String name;
+
+    @NotNull
     private String description;
+
+    @NotBlank
     private String measurementUnit;
+
     private double quantity;
     private Date expirationDate;
 

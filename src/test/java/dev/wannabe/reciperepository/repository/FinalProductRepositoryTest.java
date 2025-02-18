@@ -4,6 +4,7 @@ import dev.wannabe.reciperepository.model.FinalProduct;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import dev.wannabe.reciperepository.model.specialenum.FinalProductType;
 
 import java.util.Date;
 
@@ -21,7 +22,7 @@ public class FinalProductRepositoryTest {
         FinalProduct finalProduct = new FinalProduct();
         finalProduct.setName("Pizza");
         finalProduct.setDescription("Pizza with cheese");
-        finalProduct.setType("Food");
+        finalProduct.setType(FinalProductType.FOR_SALE);
         finalProduct.setMeasurementUnit("kg");
         finalProduct.setQuantity(3);
         finalProduct.setExpirationDate(new Date());
@@ -34,7 +35,7 @@ public class FinalProductRepositoryTest {
         assertNotNull(savedProduct);
         assertEquals("Pizza", savedProduct.getName());
         assertEquals("Pizza with cheese", savedProduct.getDescription());
-        assertEquals("Food", savedProduct.getType());
+        assertEquals(FinalProductType.FOR_SALE, savedProduct.getType());
         assertEquals("kg", savedProduct.getMeasurementUnit());
         assertEquals(3, savedProduct.getQuantity());
     }
@@ -45,7 +46,7 @@ public class FinalProductRepositoryTest {
         FinalProduct finalProduct = new FinalProduct();
         finalProduct.setName("Pizza");
         finalProduct.setDescription("Pizza with cheese");
-        finalProduct.setType("Food");
+        finalProduct.setType(FinalProductType.FOR_SALE);
         finalProduct.setMeasurementUnit("kg");
         finalProduct.setQuantity(3);
         finalProduct.setExpirationDate(new Date());
@@ -69,7 +70,7 @@ public class FinalProductRepositoryTest {
         FinalProduct finalProduct = new FinalProduct();
         finalProduct.setName("Pizza");
         finalProduct.setDescription("Pizza with cheese");
-        finalProduct.setType("Food");
+        finalProduct.setType(FinalProductType.FOR_SALE);
         finalProduct.setMeasurementUnit("kg");
         finalProduct.setQuantity(3);
         finalProduct.setExpirationDate(new Date());

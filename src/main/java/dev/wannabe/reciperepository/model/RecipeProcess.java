@@ -1,7 +1,12 @@
 package dev.wannabe.reciperepository.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import dev.wannabe.reciperepository.model.request.RecipeProcessRequest;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +16,7 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"recipeId", "stepNumber"})})
 public class RecipeProcess {
 
 
@@ -18,17 +24,31 @@ public class RecipeProcess {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @JsonIgnoreProperties("recipeProcesses")
     @ManyToOne
-    @JoinColumn(name = "recipeId")
+    @JoinColumn(name = "recipeId", nullable = false)
     private Recipe recipe;
 
+
+    @NotNull
     private int stepNumber;
+
+    @NotBlank
     private String name;
+
+    @NotEmpty
     private String description;
+
+    @NotNull
     private long duration;
+
+    @NotBlank
     private String workStation;
+
+    @NotBlank
     private String typeofWork;
 
+    @JsonIgnoreProperties("recipeProcesses")
     @ManyToMany
     @JoinTable(
             name = "ToolForStep",
@@ -37,7 +57,8 @@ public class RecipeProcess {
     )
     private Set<Tool> tools = new HashSet<>();
 
-    @OneToMany(mappedBy = "recipeProcess")
+    @JsonIgnoreProperties("recipeProcess")
+    @OneToMany(mappedBy = "recipeProcess", cascade = CascadeType.REMOVE)
     private final Set<IngredientForStep> ingredients = new HashSet<>();
 
     public RecipeProcess() {
@@ -65,8 +86,21 @@ public class RecipeProcess {
         this.typeofWork = typeofWork;
     }
 
+    public void setData(RecipeProcessRequest recipeProcessRequest) {
+        this.name=recipeProcessRequest.getName();
+        this.description=recipeProcessRequest.getDescription();
+        this.duration=recipeProcessRequest.getDuration();
+        this.workStation=recipeProcessRequest.getWorkStation();
+        this.typeofWork=recipeProcessRequest.getTypeofWork();
+        this.stepNumber=recipeProcessRequest.getStepNumber();
+    }
+
     public void addTool(Tool tool) {
         tools.add(tool);
+    }
+
+    public void removeTool(Tool tool) {
+        tools.remove(tool);
     }
 
 

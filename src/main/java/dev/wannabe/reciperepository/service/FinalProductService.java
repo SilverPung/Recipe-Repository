@@ -1,10 +1,13 @@
 package dev.wannabe.reciperepository.service;
 
 
+import jakarta.persistence.EntityNotFoundException;
 import dev.wannabe.reciperepository.model.FinalProduct;
 import dev.wannabe.reciperepository.repository.FinalProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class FinalProductService {
@@ -18,19 +21,31 @@ public class FinalProductService {
 
 
 
-    public Iterable<FinalProduct> findAll() {
+    public List<FinalProduct> findAll() {
         return finalProductRepository.findAll();
     }
 
     public FinalProduct findById(Long id) {
-        return finalProductRepository.findById(id).orElse(null);
+        return finalProductRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("FinalProduct on id " + id + " not found"));
     }
 
     public FinalProduct save(FinalProduct finalProduct) {
         return finalProductRepository.save(finalProduct);
     }
+    public FinalProduct update(FinalProduct finalProduct) {
+        if(!finalProductRepository.existsById(finalProduct.getId())){
+            throw new EntityNotFoundException("FinalProduct on id " + finalProduct.getId() + " not found");
+        }
+        return finalProductRepository.save(finalProduct);
+    }
 
     public void deleteById(Long id) {
+
+        if(!finalProductRepository.existsById(id)){
+            throw new EntityNotFoundException("FinalProduct on id " + id + " not found");
+        }
+
         finalProductRepository.deleteById(id);
     }
 
