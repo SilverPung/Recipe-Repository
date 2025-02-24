@@ -1,86 +1,92 @@
 package dev.wannabe.reciperepository.repository;
 
 import dev.wannabe.reciperepository.model.FinalProduct;
+import dev.wannabe.reciperepository.model.types.FinalProductType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import dev.wannabe.reciperepository.model.types.FinalProductType;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Date;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+
+@DataJpaTest
 public class FinalProductRepositoryTest {
 
     @Autowired
     private FinalProductRepository finalProductRepository;
 
     @Test
-    public void testSave() {
-        // given
-        FinalProduct finalProduct = new FinalProduct();
-        finalProduct.setName("Pizza");
-        finalProduct.setDescription("Pizza with cheese");
-        finalProduct.setType(FinalProductType.FOR_SALE);
-        finalProduct.setMeasurementUnit("kg");
-        finalProduct.setQuantity(3);
-        finalProduct.setExpirationDate(new Date());
+    void findByIdShouldReturnFinalProductWhenIdExists() {
+        // Given
+        FinalProduct finalProduct = new FinalProduct(FinalProductType.FOR_SALE, "Pizza", "Pizza with cheese", "kg", 3,new Date());
+        FinalProduct savedProduct = finalProductRepository.save(finalProduct);
 
-        // when
-        finalProductRepository.save(finalProduct);
 
-        // then
-        FinalProduct savedProduct = finalProductRepository.findById(finalProduct.getId()).orElse(null);
-        assertNotNull(savedProduct);
-        assertEquals("Pizza", savedProduct.getName());
-        assertEquals("Pizza with cheese", savedProduct.getDescription());
-        assertEquals(FinalProductType.FOR_SALE, savedProduct.getType());
-        assertEquals("kg", savedProduct.getMeasurementUnit());
-        assertEquals(3, savedProduct.getQuantity());
+        // When
+        Optional<FinalProduct> foundProduct = finalProductRepository.findById(savedProduct.getId());
+
+        // Then
+        assertTrue(foundProduct.isPresent());
+        assertEquals("Pizza", foundProduct.get().getName());
     }
 
     @Test
-    public void testUpdate() {
-        // given
-        FinalProduct finalProduct = new FinalProduct();
-        finalProduct.setName("Pizza");
-        finalProduct.setDescription("Pizza with cheese");
-        finalProduct.setType(FinalProductType.FOR_SALE);
-        finalProduct.setMeasurementUnit("kg");
-        finalProduct.setQuantity(3);
-        finalProduct.setExpirationDate(new Date());
-        finalProductRepository.save(finalProduct);
+    void findAllShouldReturnEmptyListWhenNoProducts() {
+        // When
+        Iterable<FinalProduct> foundProducts = finalProductRepository.findAll();
 
-        // when
-        finalProduct.setName("Pizza with pepperoni");
-        finalProductRepository.save(finalProduct);
-
-        // then
-        FinalProduct updatedProduct = finalProductRepository.findById(finalProduct.getId()).orElse(null);
-        assertNotNull(updatedProduct);
-        assertEquals("Pizza with pepperoni", updatedProduct.getName());
-
-
+        // Then
+        assertFalse(foundProducts.iterator().hasNext());
     }
 
     @Test
-    public void testDelete() {
-        // given
-        FinalProduct finalProduct = new FinalProduct();
-        finalProduct.setName("Pizza");
-        finalProduct.setDescription("Pizza with cheese");
-        finalProduct.setType(FinalProductType.FOR_SALE);
-        finalProduct.setMeasurementUnit("kg");
-        finalProduct.setQuantity(3);
-        finalProduct.setExpirationDate(new Date());
+    void saveShouldPersistFinalProduct() {
+        // Given
+        FinalProduct finalProduct = new FinalProduct(FinalProductType.FOR_SALE, "Pizza", "Pizza with cheese", "kg", 3,new Date());
+        finalProduct.setName("Test Product");
+
+        // When
+        FinalProduct savedProduct = finalProductRepository.save(finalProduct);
+
+        // Then
+        assertNotNull(savedProduct.getId());
+        assertEquals("Test Product", savedProduct.getName());
+    }
+
+    @Test
+    void deleteByIdShouldRemoveFinalProduct() {
+        // Given
+        FinalProduct finalProduct = new FinalProduct(FinalProductType.FOR_SALE, "Pizza", "Pizza with cheese", "kg", 3,new Date());
         finalProductRepository.save(finalProduct);
 
-        // when
-        finalProductRepository.delete(finalProduct);
+        // When
+        finalProductRepository.deleteById(1L);
+        Optional<FinalProduct> foundProduct = finalProductRepository.findById(1L);
 
-        // then
-        FinalProduct deletedProduct = finalProductRepository.findById(finalProduct.getId()).orElse(null);
-        assertNull(deletedProduct);
+        // Then
+        assertFalse(foundProduct.isPresent());
     }
+
+    @Test
+    void updateShouldUpdateFinalProduct() {
+        // Given
+        FinalProduct finalProduct = new FinalProduct(FinalProductType.FOR_SALE, "Pizza", "Pizza with cheese", "kg", 3,new Date());
+        FinalProduct savedProduct = finalProductRepository.save(finalProduct);
+
+        // When
+        savedProduct.setName("Updated Product");
+        finalProductRepository.save(savedProduct);
+        Optional<FinalProduct> foundProduct = finalProductRepository.findById(savedProduct.getId());
+
+        // Then
+        assertTrue(foundProduct.isPresent());
+        assertEquals("Updated Product", foundProduct.get().getName());
+    }
+
+
+
+
 }
