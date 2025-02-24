@@ -12,7 +12,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/final-products")
 public class FinalProductController {
 
     private final FinalProductService finalProductService;
@@ -22,28 +22,28 @@ public class FinalProductController {
         this.finalProductService = finalProductService;
     }
 
-    @GetMapping("/final-products")
+    @GetMapping("")
     public ResponseEntity<List<FinalProduct>> getFinalProducts() {
         return ResponseEntity.ok(finalProductService.findAll());
     }
 
-    @GetMapping("/final-products/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<FinalProduct> getFinalProductById(@PathVariable Long id) {
        return ResponseEntity.ok(finalProductService.findById(id));
     }
 
-    @PostMapping("/final-products")
+    @PostMapping("")
     public ResponseEntity<FinalProduct> saveFinalProduct(@RequestBody FinalProduct finalProduct) {
         return ResponseEntity.status(HttpStatus.CREATED).body(finalProductService.save(finalProduct));
     }
 
-    @DeleteMapping("/final-products/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFinalProduct(@PathVariable Long id) {
         finalProductService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/final-products/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<FinalProduct> updateFinalProduct(@PathVariable Long id, @RequestBody FinalProduct finalProduct) {
         finalProduct.setId(id);
         return ResponseEntity.ok(finalProductService.save(finalProduct));

@@ -12,7 +12,7 @@ import java.util.List;
 
 
 
-@RequestMapping("/api")
+@RequestMapping("/api/tools")
 @RestController
 public class ToolController {
 
@@ -24,28 +24,28 @@ public class ToolController {
     }
 
 
-    @GetMapping("/tools")
+    @GetMapping("")
     public ResponseEntity<List<Tool>> getTools() {
         return ResponseEntity.ok(toolService.findAll());
     }
 
-    @GetMapping("/tools/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Tool> getToolById(@PathVariable Long id) {
         return ResponseEntity.ok(toolService.findById(id));
     }
 
-    @PostMapping("/tools")
+    @PostMapping("")
     public ResponseEntity<Tool> createTool(@RequestBody Tool tool) {
         return ResponseEntity.status(HttpStatus.CREATED).body(toolService.save(tool));
     }
 
-    @PutMapping("/tools/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Tool> updateTool(@PathVariable Long id, @RequestBody Tool tool) {
         tool.setId(id);
         return ResponseEntity.ok(toolService.save(tool));
     }
 
-    @DeleteMapping("/tools/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTool(@PathVariable Long id) {
         toolService.deleteById(id);
         return ResponseEntity.noContent().build();

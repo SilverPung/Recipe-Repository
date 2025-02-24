@@ -3,7 +3,7 @@ package dev.wannabe.reciperepository.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import dev.wannabe.reciperepository.model.request.IngredientResponse;
-import dev.wannabe.reciperepository.model.specialenum.IngredientType;
+import dev.wannabe.reciperepository.model.types.IngredientType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

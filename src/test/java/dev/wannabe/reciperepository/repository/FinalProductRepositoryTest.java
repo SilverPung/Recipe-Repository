@@ -4,7 +4,7 @@ import dev.wannabe.reciperepository.model.FinalProduct;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import dev.wannabe.reciperepository.model.specialenum.FinalProductType;
+import dev.wannabe.reciperepository.model.types.FinalProductType;
 
 import java.util.Date;
 

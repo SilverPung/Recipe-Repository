@@ -2,7 +2,7 @@ package dev.wannabe.reciperepository.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import dev.wannabe.reciperepository.model.specialenum.RecipeType;
+import dev.wannabe.reciperepository.model.types.RecipeType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
