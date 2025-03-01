@@ -1,6 +1,7 @@
 package dev.wannabe.reciperepository.repository;
 
 import dev.wannabe.reciperepository.model.Supplier;
+import dev.wannabe.reciperepository.model.types.SupplierType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class SupplierRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        savedSupplier = supplierRepository.save(new Supplier("Test Supplier", "Test Type", "test@example.com"));
+        savedSupplier = supplierRepository.save(new Supplier("Test Supplier", SupplierType.PERSON, "test@example.com"));
     }
 
     @Test

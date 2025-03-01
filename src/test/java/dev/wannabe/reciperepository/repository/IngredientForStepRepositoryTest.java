@@ -4,6 +4,7 @@ package dev.wannabe.reciperepository.repository;
 import dev.wannabe.reciperepository.model.*;
 import dev.wannabe.reciperepository.model.types.IngredientType;
 import dev.wannabe.reciperepository.model.types.RecipeType;
+import dev.wannabe.reciperepository.model.types.SupplierType;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +46,7 @@ public class IngredientForStepRepositoryTest {
     @BeforeEach
     void setUp() {
 
-        Supplier supplier = supplierRepository.save(new Supplier("Supplier", "type", "address"));
+        Supplier supplier = supplierRepository.save(new Supplier("Supplier", SupplierType.FIRM, "address"));
 
         ingredient = ingredientRepository.save(new Ingredient("Tomato",new Date(),10.0, IngredientType.INGREDIENT, "kg", supplier));
 

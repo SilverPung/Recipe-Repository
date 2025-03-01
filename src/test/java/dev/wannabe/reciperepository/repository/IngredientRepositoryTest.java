@@ -4,6 +4,7 @@ package dev.wannabe.reciperepository.repository;
 import dev.wannabe.reciperepository.model.Ingredient;
 import dev.wannabe.reciperepository.model.Supplier;
 import dev.wannabe.reciperepository.model.types.IngredientType;
+import dev.wannabe.reciperepository.model.types.SupplierType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ public class IngredientRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        Supplier supplier = new Supplier("Supplier", "type", "address");
+        Supplier supplier = new Supplier("Supplier", SupplierType.FIRM, "address");
         supplier = supplierRepository.save(supplier);
         ingredient = new Ingredient("Tomato", new Date(), 10.0, IngredientType.INGREDIENT, "kg", supplier);
         ingredient = ingredientRepository.save(ingredient);

@@ -2,6 +2,7 @@ package dev.wannabe.reciperepository.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import dev.wannabe.reciperepository.model.types.SupplierType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -22,8 +23,9 @@ public class Supplier {
     @NotBlank
     private String name;
 
-    @NotBlank
-    private String type;
+
+    @Enumerated(EnumType.STRING)
+    private SupplierType type;
 
     @NotBlank
     private String email;
@@ -36,14 +38,14 @@ public class Supplier {
     public Supplier() {
     }
 
-    public Supplier(String name, String type, String email) {
+    public Supplier(String name, SupplierType type, String email) {
         this.name = name;
         this.type = type;
         this.email = email;
     }
 
 
-    public Supplier(long id, String name, String type, String email) {
+    public Supplier(long id, String name, SupplierType type, String email) {
         this.id = id;
         this.name = name;
         this.type = type;
