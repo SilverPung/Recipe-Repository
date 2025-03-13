@@ -12,12 +12,12 @@ public class IngredientForStepRequest {
 
     long ingredientId;
 
-    String quantityNeeded;
+    Double quantityNeeded;
 
     public IngredientForStepRequest() {
     }
 
-    public IngredientForStepRequest(long stepId, long ingredientId, String quantityNeeded) {
+    public IngredientForStepRequest(long stepId, long ingredientId, Double quantityNeeded) {
         this.stepId = stepId;
         this.ingredientId = ingredientId;
         this.quantityNeeded = quantityNeeded;

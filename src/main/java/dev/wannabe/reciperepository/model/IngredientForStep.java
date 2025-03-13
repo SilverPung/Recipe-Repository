@@ -25,12 +25,12 @@ public class IngredientForStep {
     private RecipeProcess recipeProcess;
 
     @NotNull
-    private String quantityNeeded;
+    private Double quantityNeeded;
 
     public IngredientForStep() {
     }
 
-    public IngredientForStep(Ingredient ingredient, RecipeProcess recipeProcess, String quantityNeeded) {
+    public IngredientForStep(Ingredient ingredient, RecipeProcess recipeProcess, Double quantityNeeded) {
         this.ingredient = ingredient;
         this.recipeProcess = recipeProcess;
         this.quantityNeeded = quantityNeeded;
