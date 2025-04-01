@@ -16,7 +16,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=$DB_PASSWORD
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     ports:
-        - '8081:8081'
+        - '8081:8080'
+
 
   db:
     image: 'postgres:latest'
@@ -36,6 +37,8 @@ services:
       POSTGRES_DB : $KEYCLOAK_DB
       POSTGRES_USER : $KEYCLOAK_DB_USERNAME
       POSTGRES_PASSWORD : $KEYCLOAK_DB_PASSWORD
+    ports:
+        - "5433:5432"
 
 
   keycloak:
