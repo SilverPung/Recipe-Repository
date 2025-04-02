@@ -18,8 +18,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> auth// Publiczne endpointy
-                        .anyRequest().authenticated() // Wszystko inne wymaga autoryzacji
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/actuator/**").permitAll() // Deny all requests in Production
+                        .anyRequest().authenticated()
                 ).oauth2ResourceServer(oauth2 -> oauth2.jwt(
                         Customizer.withDefaults()
                 ))
