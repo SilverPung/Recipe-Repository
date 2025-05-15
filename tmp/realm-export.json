@@ -295,7 +295,26 @@
         }
       ],
       "security-admin-console": [],
-      "reciperepositorybackend": [],
+      "reciperepositorybackend": [
+        {
+          "id": "8b168d62-ccbb-40dd-8edc-b99eae166a7d",
+          "name": "user",
+          "description": "",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "3ad8aa75-eb35-4731-ab17-7dffd5c9a0b6",
+          "attributes": {}
+        },
+        {
+          "id": "c615bc42-e94e-489e-9474-d9e3bc8de50f",
+          "name": "admin",
+          "description": "",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "3ad8aa75-eb35-4731-ab17-7dffd5c9a0b6",
+          "attributes": {}
+        }
+      ],
       "admin-cli": [],
       "account-console": [],
       "broker": [],
@@ -1519,14 +1538,14 @@
         "subComponents": {},
         "config": {
           "allowed-protocol-mapper-types": [
+            "oidc-usermodel-attribute-mapper",
+            "oidc-usermodel-property-mapper",
+            "saml-role-list-mapper",
             "saml-user-property-mapper",
             "oidc-address-mapper",
-            "saml-role-list-mapper",
-            "saml-user-attribute-mapper",
-            "oidc-full-name-mapper",
-            "oidc-usermodel-property-mapper",
             "oidc-sha256-pairwise-sub-mapper",
-            "oidc-usermodel-attribute-mapper"
+            "saml-user-attribute-mapper",
+            "oidc-full-name-mapper"
           ]
         }
       },
@@ -1539,13 +1558,13 @@
         "config": {
           "allowed-protocol-mapper-types": [
             "oidc-usermodel-attribute-mapper",
+            "oidc-usermodel-property-mapper",
+            "saml-user-property-mapper",
             "saml-user-attribute-mapper",
             "oidc-sha256-pairwise-sub-mapper",
-            "saml-user-property-mapper",
-            "oidc-usermodel-property-mapper",
+            "oidc-full-name-mapper",
             "saml-role-list-mapper",
-            "oidc-address-mapper",
-            "oidc-full-name-mapper"
+            "oidc-address-mapper"
           ]
         }
       },
