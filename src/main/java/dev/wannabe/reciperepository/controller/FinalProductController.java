@@ -5,6 +5,8 @@ import dev.wannabe.reciperepository.service.FinalProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,5 +49,11 @@ public class FinalProductController {
     public ResponseEntity<FinalProduct> updateFinalProduct(@PathVariable Long id, @RequestBody FinalProduct finalProduct) {
         finalProduct.setId(id);
         return ResponseEntity.ok(finalProductService.save(finalProduct));
+    }
+
+
+    @GetMapping("/test")
+    public ResponseEntity<String> test(@AuthenticationPrincipal Jwt jwt) {
+        return ResponseEntity.ok("Hello " + jwt.getClaimAsString("preferred_username"));
     }
 }
