@@ -16,7 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-
 public class SecurityConfig {
 
 
@@ -33,6 +32,8 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/**").permitAll() // Deny all requests in Production
                         .requestMatchers("/api/final-products/**").hasAnyRole("user", "admin")
                         .requestMatchers("/api/ingredients/**").hasRole("admin")
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 ).oauth2ResourceServer(oauth2 -> oauth2.jwt(
                         jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter)
@@ -47,8 +48,4 @@ public class SecurityConfig {
     public JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withJwkSetUri("http://keycloak:8080/realms/reciperepositoryrealm/protocol/openid-connect/certs").build();
     }
-
-
-    
-
 }

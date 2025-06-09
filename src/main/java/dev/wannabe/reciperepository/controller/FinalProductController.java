@@ -51,9 +51,4 @@ public class FinalProductController {
         return ResponseEntity.ok(finalProductService.save(finalProduct));
     }
 
-
-    @GetMapping("/test")
-    public ResponseEntity<String> test(@AuthenticationPrincipal Jwt jwt) {
-        return ResponseEntity.ok("Hello " + jwt.getClaimAsString("preferred_username"));
-    }
 }
