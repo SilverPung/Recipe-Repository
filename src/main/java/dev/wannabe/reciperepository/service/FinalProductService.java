@@ -1,10 +1,12 @@
 package dev.wannabe.reciperepository.service;
 
 
+import dev.wannabe.reciperepository.model.request.PageResult;
 import jakarta.persistence.EntityNotFoundException;
 import dev.wannabe.reciperepository.model.FinalProduct;
 import dev.wannabe.reciperepository.repository.FinalProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +23,8 @@ public class FinalProductService {
 
 
 
-    public List<FinalProduct> findAll() {
-        return finalProductRepository.findAll();
+    public PageResult<FinalProduct> findAll(Pageable pageable) {
+        return PageResult.fromPage(finalProductRepository.findAll(pageable));
     }
 
     public FinalProduct findById(Long id) {

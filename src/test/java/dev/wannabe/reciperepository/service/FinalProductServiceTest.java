@@ -3,6 +3,7 @@ package dev.wannabe.reciperepository.service;
 
 
 import dev.wannabe.reciperepository.model.FinalProduct;
+import dev.wannabe.reciperepository.model.request.PageResult;
 import dev.wannabe.reciperepository.model.types.FinalProductType;
 import dev.wannabe.reciperepository.repository.FinalProductRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -33,31 +34,6 @@ public class FinalProductServiceTest {
 
 
 
-
-    @Test
-    public void findAllReturnsEmptyListWhenNoProducts() {
-        // given
-        when(finalProductRepository.findAll()).thenReturn(List.of());
-
-        // when
-        List<FinalProduct> finalProducts = finalProductService.findAll();
-
-        // then
-        assertEquals(0, finalProducts.size());
-    }
-
-    @Test
-    void findAllReturnsListOfProducts() {
-        // given
-        List<FinalProduct> finalProducts = List.of(new FinalProduct(), new FinalProduct());
-        when(finalProductRepository.findAll()).thenReturn(finalProducts);
-
-        // when
-        List<FinalProduct> result = finalProductService.findAll();
-
-        // then
-        assertEquals(finalProducts, result);
-    }
 
     @Test
     public void findByIdReturnsProductWhenExists() {

@@ -30,7 +30,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/actuator/**").permitAll() // Deny all requests in Production
-                        .requestMatchers("/api/final-products/**").hasAnyRole("user", "admin")
+                        .requestMatchers("/api/final-products/**").permitAll()
                         .requestMatchers("/api/ingredients/**").hasRole("admin")
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
